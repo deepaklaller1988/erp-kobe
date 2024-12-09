@@ -14,26 +14,27 @@ export const Header = () => {
       <div className="flex flex-col h-full justify-between">
         <div className="header-inner flex justify-between items-center">
           <div className="header-icon">
-            <NavLink to="/">
+            {/* <NavLink to="/">
               <img
                 className="w-[120px]"
                 src="/erp.jpg"
                 alt="TikTok Logo"
               />
-            </NavLink>
+            </NavLink> */}
+            <h1 className=" text-white font-bold text-2xl">ERP</h1>
           </div>
           <div className="menu-list">
             <ul className="flex gap-3 items-center">
               <li>
                 <NavLink
                   to="/invite"
-                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer">
+                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer">
                   Invite-Shipper
                 </NavLink>
               </li>
               <li>
                 <button
-                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer">
+                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer">
                   Logout
                 </button>
               </li>

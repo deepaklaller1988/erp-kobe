@@ -68,29 +68,29 @@ const Register: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <div className="max-w-[600px]">
-        <h1 className="text-black font-bold text-5xl text-center">Sign up</h1>
+      <div className="w-96">
+        <h1 className="text-black font-bold text-5xl text-center">Register</h1>
         <p className="mt-10 mb-1 text-black">Choose Your Role</p>
-        <div className="flex justify-between">
+        <div className="flex justify-center items-center gap-5">
           <button
-            className={`border-2 px-5 py-2 rounded-md flex flex-col items-center shadow-md gap-2 ${
-              userData.selectedRole === "Seller" ? "bg-blue-300" : "hover:bg-blue-300"
+            className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 border-gray-200 text-gray-300 ${
+              userData.selectedRole === "Seller" ? "border-blue-600 !text-blue-600" : "hover:bg-gray-100"
             }`}
             onClick={() => handleButtonClick("Seller")}
           >
             <span>
-              <FaBalanceScale size={25} />
+              <FaBalanceScale size={35} />
             </span>
             Seller
           </button>
           <button
-            className={`border-2 px-3 py-2 rounded-md flex flex-col items-center shadow-md gap-1 ${
-              userData.selectedRole === "Shipper" ? "bg-blue-300" : "hover:bg-blue-300"
+            className={`p-5 rounded-xl flex flex-col items-center gap-1 w-full border duration-300 border-gray-200 text-gray-300 ${
+              userData.selectedRole === "Shipper" ? "border-blue-600 !text-blue-600" : "hover:bg-gray-100"
             }`}
             onClick={() => handleButtonClick("Shipper")}
           >
             <span>
-              <MdDeliveryDining size={30} />
+              <MdDeliveryDining size={35} />
             </span>
             Shipper
           </button>
@@ -99,9 +99,8 @@ const Register: React.FC = () => {
 
         <p className="mt-4 mb-1 text-black">Name</p>
         <input
-          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
+          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
           type="text"
-          placeholder="Enter your name"
           value={userData.userName}
           onChange={(e) =>
             setUserData({ ...userData, userName: e.target.value })
@@ -111,9 +110,8 @@ const Register: React.FC = () => {
 
         <p className="mt-4 mb-1 text-black">Email</p>
         <input
-          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
+          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
           type="email"
-          placeholder="Enter your email address"
           value={userData.email}
           onChange={(e) =>
             setUserData({ ...userData, email: e.target.value })
@@ -123,9 +121,8 @@ const Register: React.FC = () => {
 
         <p className="mt-4 mb-1 text-black">Password</p>
         <input
-          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
+          className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
           type="password"
-          placeholder="Create a password"
           value={userData.password}
           onChange={(e) =>
             setUserData({ ...userData, password: e.target.value })
@@ -135,7 +132,7 @@ const Register: React.FC = () => {
 
         <button
           onClick={handleFormSubmit}
-          className="rounded-md p-3 px-5 transition text-white bg-blue-400 hover:bg-blue-600 min-w-[92px] mt-8"
+          className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 w-full duration-300 mt-8"
         >
           Sign up
         </button>
