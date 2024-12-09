@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Table from "react-data-table-component";
 import CustomPagination from "./CustomPagination";
 import { TableColumn } from "react-data-table-component";
@@ -12,9 +12,9 @@ export const DataTable = <T,>({ data, columns }: DataTableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
+  // const indexOfLastRow = currentPage * rowsPerPage;
+  // const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  // const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
 
   const totalPages = Math.ceil(data.length / rowsPerPage);
 

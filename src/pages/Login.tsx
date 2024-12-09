@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useTitle from "../hooks/useTitle";
+import { Link} from "react-router-dom";
 
 const Login: React.FC = () => {
   useTitle({ title: "Login" });
@@ -30,7 +31,7 @@ const Login: React.FC = () => {
       <div className="max-w-[600px]">
         <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
           <h1 className="text-black font-bold text-5xl text-center">
-            Login
+            Signin
           </h1>
           <p className="mt-10 mb-1 text-black">Email</p>
           <input
@@ -66,7 +67,7 @@ const Login: React.FC = () => {
           </button>
           <div className="mt-10 flex gap-2 text-black">
             <span>Don't have an account?</span>
-            <button className="">Sign up</button>
+            <Link to="/auth/register" className="">Sign up</Link>
           </div>
         </form>
       </div>
