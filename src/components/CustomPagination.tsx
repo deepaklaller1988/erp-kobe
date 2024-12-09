@@ -25,24 +25,21 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 
   return (
     <div className="flex justify-between items-center gap-4 my-6">
-      <button onClick={handlePrev} className="bg-[#efefef] text-black/50 px-3 py-1 rounded-lg border-[1px] text-black border-white hover:border-[#018c5e] duration-300">
+      <button onClick={handlePrev} className="bg-[#efefef] text-black px-3 py-1 rounded-lg border-[1px] border-white hover:border-black duration-300 hover:bg-blue-600">
         Previous
       </button>
       <section className="flex gap-2">
-      <button className="bg-[#018c5e] text-white px-3 py-1 rounded-lg">
+      <button className="bg-[#efefef] px-3 py-1 rounded-lg border-[1px] text-black  hover:border-black duration-300 hover:bg-blue-600">
         1
       </button>
-      <button className="bg-[#efefef] text-black/50 px-3 py-1 rounded-lg border-[1px] text-black border-white hover:border-[#018c5e] duration-300">
+      <button className="bg-[#efefef] px-3 py-1 rounded-lg border-[1px] text-black  hover:border-black duration-300 hover:bg-blue-600">
         2
       </button>
-      <button className="bg-[#efefef] text-black/50 px-3 py-1 rounded-lg border-[1px] text-black border-white hover:border-[#018c5e] duration-300">
+      <button className="bg-[#efefef] px-3 py-1 rounded-lg border-[1px] text-black  hover:border-black duration-300 hover:bg-blue-600">
         3
       </button>
-      {/* <button className="bg-[#efefef] text-black/50 px-3 py-1 rounded-lg border-[1px] text-black border-white hover:border-[#018c5e] duration-300">
-        4
-      </button> */}
       </section>
-      <button onClick={handleNext} className="bg-[#efefef] text-black/50 px-3 py-1 rounded-lg border-[1px] text-black border-white hover:border-[#018c5e] duration-300">
+      <button onClick={handleNext} className="bg-[#efefef] text-black px-3 py-1 rounded-lg border-[1px] hover:bg-blue-600  border-white hover:border-black duration-300">
         Next
       </button>
     </div>

@@ -50,7 +50,7 @@ const Seller = () => {
       <div className="mt-3 max-w-full">
         <DataTable data={data} columns={columns} />
       </div>
-      <div><button onClick={handleProduct} className="font-bold border-2 px-2 py-2 rounded-md flex flex-col items-center shadow-md gap-1 hover:bg-blue-500">Add Product</button></div>
+      <div><button onClick={handleProduct} className="font-bold border-2 border-slate-400 px-2 py-2 rounded-md flex flex-col items-center shadow-md gap-1 hover:bg-blue-500 hover:border-black ">Add Product</button></div>
     </div>
   );
 };
