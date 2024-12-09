@@ -26,19 +26,16 @@ export const Header = () => {
             <ul className="flex gap-3 items-center">
               <li>
                 <NavLink
-                  to="/"
-                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer"
-                >
-                  Support
+                  to="/invite"
+                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer">
+                  Invite-Shipper
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/"
-                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer"
-                >
-                  Pricing
-                </NavLink>
+                <button
+                  className="hover:bg-[#355489] duration-300 hover:text-[white] text-[#86a2d1] py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer">
+                  Logout
+                </button>
               </li>
             </ul>
           </div>

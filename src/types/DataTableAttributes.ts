@@ -1,35 +1,25 @@
 import { TableColumn } from "react-data-table-component";
+import { Primitive } from "react-data-table-component/dist/DataTable/types";
 
+//Seller
 export interface SellerProductData {
-    botName: string;
+    sellerProductName: string;
     messageType: string;
-    creatorsReached: number;
-    replies: number;
-    sampleRequests: number;
-    remainingCreators: number;
-    botStatus: string;
-    createdDate: string;
-    action: string;
 }
-
-export interface SellerOrderData {
-    botName: string;
-    messageType: string;
-    creatorsReached: number;
-    replies: number;
-    sampleRequests: number;
-    remainingCreators: number;
-    botStatus: string;
-    createdDate: string;
-    action: string;
-}
-
 export interface SellerProductAttributes {
+    messageType: Primitive;
     data: SellerProductData[];
     columns: TableColumn<SellerProductData>[];
 }
 
-export interface SellerOrderAttributes {
-    data: SellerOrderData[];
-    columns: TableColumn<SellerOrderData>[];
+//shipper
+export interface ShipperOrderData {
+    shipperProductName: string;
+    messageType: string;
+}
+
+export interface ShipperOrderAttributes {
+    messageType: Primitive;
+    data: ShipperOrderData[];
+    columns: TableColumn<ShipperOrderData>[];
 }
