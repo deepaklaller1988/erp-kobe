@@ -17,7 +17,7 @@ export const Header = () => {
             <NavLink to="/">
               <img
                 className="w-[120px]"
-                src="tiktoklogo.png"
+                src="/erp.jpg"
                 alt="TikTok Logo"
               />
             </NavLink>

@@ -5,6 +5,8 @@ import { Primitive } from "react-data-table-component/dist/DataTable/types";
 export interface SellerProductData {
     sellerProductName: string;
     messageType: string;
+    availablestock:number;
+    totalstock:number
 }
 export interface SellerProductAttributes {
     messageType: Primitive;
@@ -16,6 +18,8 @@ export interface SellerProductAttributes {
 export interface ShipperOrderData {
     shipperProductName: string;
     messageType: string;
+    label:string,
+    status:string
 }
 
 export interface ShipperOrderAttributes {
