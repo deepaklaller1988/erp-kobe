@@ -54,11 +54,8 @@ const Register: React.FC = () => {
       newErrors.password =
         "Password must contain at least 8 characters, including uppercase, lowercase, a number, and a special character.";
     }
-
     setErrors(newErrors);
-
     if (Object.keys(newErrors).length === 0) {
-      console.log("userData", userData);
       window.alert("Sign-up successful!");
       setUserData({
         selectedRole: "",

@@ -5,6 +5,9 @@ import { DataTable } from "../components/DataTable";
 
 const Shipper = () => {
     useTitle({ title: "Shipper-Table" });
+    const handleOrder=()=>{
+      console.log("Order added")
+    }
     const data: ShipperOrderData[] = [
       {
         shipperProductName: "Puma",
@@ -56,6 +59,7 @@ const Shipper = () => {
         <div className="mt-3 max-w-full">
           <DataTable data={data} columns={columns} />
         </div>
+        <div><button onClick={handleOrder} className="font-bold border-2 px-2 py-2 rounded-md flex flex-col items-center shadow-md gap-1 hover:bg-blue-500">Add Order</button></div>
       </div>
     );
   };
