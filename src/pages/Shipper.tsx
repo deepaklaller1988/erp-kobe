@@ -44,7 +44,7 @@ const Shipper = () => {
         width: "25%",
       },
       {
-        name: "Message Type",
+        name: "Used Stock",
         selector: (row) => row.messageType, 
         sortable: false,
         width: "25%",
@@ -69,17 +69,18 @@ const Shipper = () => {
       <div
       className="flex flex-col justify-center items-center w-screen py-5"
     >
-      <div className="w-3/4">
-        <DataTable data={data} columns={columns} />
-      </div>
-      <div className="mt-5">
-        <button
+        <div className="mt-5 flex justify-end w-full  ">
+      <button
           onClick={handleOrder}
-          className="font-bold border-2 border-slate-400 px-4 py-2 rounded-md shadow-md hover:bg-blue-500 hover:border-black"
+          className="font-bold px-6 py-3 rounded-xl border hover:bg-black hover:text-white duration-300"
         >
           Add Order
         </button>
       </div>
+      <div className="w-3/4">
+        <DataTable data={data} columns={columns} />
+      </div>
+      
     </div>
     );
   };

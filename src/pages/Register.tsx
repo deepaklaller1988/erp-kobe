@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useTitle from "../hooks/useTitle";
 import { FaBalanceScale } from "react-icons/fa";
 import { MdDeliveryDining } from "react-icons/md";
 import { Link } from "react-router-dom";
+import API from "../utils/API";
 
 const Register: React.FC = () => {
   useTitle({ title: "Register" });
   const [userData, setUserData] = useState({
-    selectedRole: "",
-    userName: "",
+    type: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -20,50 +21,75 @@ const Register: React.FC = () => {
     password: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleButtonClick = (role: string) => {
     setUserData((prev) => ({
       ...prev,
-      selectedRole: role,
+      type: role,
     }));
-    setErrors((prev:any) => ({
+    setErrors((prev: any) => ({
       ...prev,
-      selectedRole: "",
+      type: "",
     }));
   };
 
+  useEffect(() => {
+    if (isSubmitting) {
+      const handleFormSubmit = async () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+        const newErrors: any = {};
+        if (!userData.type) {
+          newErrors.type = "Please select a role.";
+        }
+        if (!userData.name.trim()) {
+          newErrors.userName = "Name is required.";
+        }
+        if (!userData.email) {
+          newErrors.email = "Email is required.";
+        } else if (!emailRegex.test(userData.email)) {
+          newErrors.email = "Please enter a valid email.";
+        }
+        if (!userData.password) {
+          newErrors.password = "Password is required.";
+        } else if (!passwordRegex.test(userData.password)) {
+          newErrors.password =
+            "Password must contain at least 8 characters, including uppercase, lowercase, a number, and a special character.";
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
+          setIsSubmitting(false);
+          return;
+        }
+
+        try {
+          const response = await API.post("auth/register",userData)
+          console.log("response",response)
+          setUserData({
+            type: "",
+            name: "",
+            email: "",
+            password: "",
+          });
+          setIsSubmitting(false);
+        } catch (error) {
+          console.error(error);
+          setIsSubmitting(false);
+        }
+      };
+
+      handleFormSubmit();
+    }
+  }, [isSubmitting, userData]);
+
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-    const newErrors: any = {};
-    if (!userData.selectedRole) {
-      newErrors.selectedRole = "Please select a role.";
-    }
-    if (!userData.userName.trim()) {
-      newErrors.userName = "Name is required.";
-    }
-    if (!userData.email) {
-      newErrors.email = "Email is required.";
-    } else if (!emailRegex.test(userData.email)) {
-      newErrors.email = "Please enter a valid email.";
-    }
-    if (!userData.password) {
-      newErrors.password = "Password is required.";
-    } else if (!passwordRegex.test(userData.password)) {
-      newErrors.password =
-        "Password must contain at least 8 characters, including uppercase, lowercase, a number, and a special character.";
-    }
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) {
-      window.alert("Sign-up successful!");
-      setUserData({
-        selectedRole: "",
-        userName: "",
-        email: "",
-        password: "",
-      });
-    }
+    setIsSubmitting(true); 
   };
 
   return (
@@ -74,9 +100,11 @@ const Register: React.FC = () => {
         <div className="flex justify-center items-center gap-5">
           <button
             className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 border-gray-200 text-gray-300 ${
-              userData.selectedRole === "Seller" ? "border-blue-600 !text-blue-600" : "hover:bg-gray-100"
+              userData.type === "seller"
+                ? "border-blue-600 !text-blue-600"
+                : "hover:bg-gray-100"
             }`}
-            onClick={() => handleButtonClick("Seller")}
+            onClick={() => handleButtonClick("seller")}
           >
             <span>
               <FaBalanceScale size={35} />
@@ -85,9 +113,11 @@ const Register: React.FC = () => {
           </button>
           <button
             className={`p-5 rounded-xl flex flex-col items-center gap-1 w-full border duration-300 border-gray-200 text-gray-300 ${
-              userData.selectedRole === "Shipper" ? "border-blue-600 !text-blue-600" : "hover:bg-gray-100"
+              userData.type === "shipper"
+                ? "border-blue-600 !text-blue-600"
+                : "hover:bg-gray-100"
             }`}
-            onClick={() => handleButtonClick("Shipper")}
+            onClick={() => handleButtonClick("shipper")}
           >
             <span>
               <MdDeliveryDining size={35} />
@@ -101,9 +131,9 @@ const Register: React.FC = () => {
         <input
           className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
           type="text"
-          value={userData.userName}
+          value={userData.name}
           onChange={(e) =>
-            setUserData({ ...userData, userName: e.target.value })
+            setUserData({ ...userData, name: e.target.value })
           }
         />
         <p className="text-red-500 mt-2">{errors.userName}</p>
@@ -139,7 +169,9 @@ const Register: React.FC = () => {
 
         <div className="mt-10 flex gap-2 text-black">
           <span>Already have an account?</span>
-          <Link to="/auth/login" className="">Sign in</Link>
+          <Link to="/auth/login" className="">
+            Sign in
+          </Link>
         </div>
       </div>
     </div>

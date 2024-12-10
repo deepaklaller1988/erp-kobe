@@ -3,86 +3,63 @@ import useTitle from "../hooks/useTitle";
 
 const ForgotPassword: React.FC = () => {
   useTitle({ title: "Forgot Password" });
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [code, setCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [userData, setUserData] = useState({
+    email: "",
+  });
+  const [errors, setErrors] = useState<any>({
+    email: "",
+  });
 
-  const handleForgotPassword = async (event: React.FormEvent) => {
+  const handleEmail = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError(null);
     setSuccess(null);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const newErrors: any = {};
 
-    try {
-      setSuccess("Verification code sent to your email.");
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Error sending verification code.");
+    if (!userData.email) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(userData.email)) {
+      newErrors.email = "Please enter a valid email.";
     }
-  };
-
-  const handleSubmitNewPassword = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError(null);
-    setSuccess(null);
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
 
     try {
-      setSuccess("Password updated successfully!");
+      setSuccess("Verification link sent to your email.");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Error updating password.");
+      setErrors({ email: err.message || "Error sending verification link." });
     }
   };
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <div className="max-w-[600px]">
-        <form onSubmit={handleForgotPassword} className="flex flex-col w-full">
+      <div className="m-w-[500px]">
           <h1 className="text-black font-bold text-5xl text-center">
-            Forgot Password
+            Send Password Reset Link
           </h1>
-          <p className="mt-10 mb-1 text-black">Username</p>
+          <p className="mt-6 text-black">Email Address</p>
           <input
             className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
-            type="text"
-            name="email"
-            placeholder="Enter your email address"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Enter your email"
+            value={userData.email}
+            onChange={(e) =>
+              setUserData({ ...userData, email: e.target.value })
+            }
           />
-          <p className="text-red-500">{error}</p>
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
           <button
+          onClick={handleEmail}
             type="submit"
-            className="rounded-md p-3 px-5 transition text-white bg-[#028b5d] hover:bg-[#01774f] min-w-[92px] mt-8"
+            className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
           >
-            Send Verification Code
-          </button>
-          <p className="mt-10 text-black">Verification Code</p>
-          <input
-            className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
-            type="text"
-            placeholder="Enter verification code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-          <p className="mt-4 mb-1 text-black">New Password</p>
-          <input
-            className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
-            type="password"
-            placeholder="Create a new password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <button
-            onClick={handleSubmitNewPassword}
-            className="rounded-md p-3 px-5 transition text-white bg-[#028b5d] hover:bg-[#01774f] min-w-[92px] mt-8"
-          >
-            Reset Password
+            Send Verification Link
           </button>
           {success && <p className="text-green-500">{success}</p>}
-        </form>
       </div>
     </div>
   );

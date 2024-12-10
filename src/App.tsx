@@ -3,12 +3,13 @@ import { Header } from "./components/Header";
 import { Suspense, lazy } from "react";
 import MiniLoader from "./components/MiniLoader";
 import Home from "./pages/Home";
-import Invite from "./pages/Invite";
 
 const Seller = lazy(() => import("./pages/Seller"));
+const Invite = lazy(() => import("./pages/Invite"));
 const Shipper = lazy(() => import("./pages/Shipper"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
+const Verification = lazy(() => import("./pages/Verification"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -17,8 +18,9 @@ const Layout = () => {
 
   const isAuthRoute = [
     "/auth/login",
-    "/auth/forgot",
+    "/auth/forgotpassword",
     "/auth/register",
+    "/auth/verification",
   ].includes(location.pathname);
 
   return (
@@ -33,7 +35,8 @@ const Layout = () => {
             <Route path="/invite" element={<Invite/>} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/forgot" element={<ForgotPassword />} />
+            <Route path="/auth/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/auth/verification" element={<Verification />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

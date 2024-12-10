@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useTitle from "../hooks/useTitle";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
   useTitle({ title: "Login" });
@@ -11,7 +11,9 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const getData = async () => {};
+    const getData = async () => {
+  
+    };
     getData();
   }, []);
 
@@ -20,6 +22,20 @@ const Login: React.FC = () => {
     setError(null);
 
     try {
+      const response = await fetch("api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const apiData = await response.json();
+      console.log("apiData", apiData);
+
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Login failed!");
@@ -28,7 +44,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <div className="max-w-[600px]">
+      <div className="w-96">
         <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
           <h1 className="text-black font-bold text-5xl text-center">
             Sign in
@@ -65,7 +81,9 @@ const Login: React.FC = () => {
           </button>
           <div className="mt-10 flex gap-2 text-black">
             <span>Don't have an account?</span>
-            <Link to="/auth/register" className="text-black hover:text-black/80 duration-300">Sign up</Link>
+            <Link to="/auth/register" className="text-black hover:text-black/80 duration-300">
+              Sign up
+            </Link>
           </div>
         </form>
       </div>
