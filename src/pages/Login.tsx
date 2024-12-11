@@ -27,26 +27,24 @@ const Login: React.FC = () => {
   
     try {
       const response = await API.post("auth/login", userData);
-      console.log("API Response:", response); 
-
+      // console.log("API Response:", response); 
       if (response.success === true) {
+        const { accessToken} = response.data;
+        localStorage.setItem("accessToken",accessToken)
+        // console.log('local token :', accessToken)
         router("/"); 
       } else {
-        console.log("API Response:", response); 
-
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
-          console.log("Email Error: No user found.");
+          // console.log("Email Error: No user found.");
           setEmailError("No user found with this email address.");
         }
-
         else if (response.error?.code === "ERR_WRONG_PASSWORD") {
-          console.log("Password Error: Incorrect password.");
+          // console.log("Password Error: Incorrect password.");
           setPasswordError("Incorrect password.");
         }
-
         else {
-          console.log("General Error: Invalid credentials.");
-          setEmailError("Please check your email for Account Activation");
+          // console.log("General Error: Invalid credentials.");
+          setEmailError("Invalid email");
         }
       }
     } catch (err: any) {

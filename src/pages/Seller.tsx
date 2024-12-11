@@ -2,157 +2,137 @@ import { TableColumn } from "react-data-table-component";
 import { DataTable } from "../components/DataTable";
 import useTitle from "../hooks/useTitle";
 import { SellerProductData, ShipperOrderData } from "../types/DataTableAttributes";
+import AddProduct from "../components/Addproduct";
+import { useEffect, useState } from "react";
 import API from "../utils/API";
+import AddorderData from "../components/Addorder";
 
 const Seller = () => {
   useTitle({ title: "Seller-Table" });
 
-  const handleProduct = () => {
-    console.log("Product added");
+  const [isPollPopupOpen, setIsPollPopupOpen] = useState(false);
+  const [isPollPopupOrderOpen, setisPollPopupOrderOpen] = useState(false);
+  const [apiProductData, setApiProductData] = useState<SellerProductData[]>([]);
+  const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]); 
+
+  useEffect(() => {
+    apiProduct();
+    apiOrderSellerData();
+  }, []);
+
+  const apiProduct = async () => {
+    const response = await API.get("product/");
+    console.log("product data ", response.data.rows);
+    setApiProductData(response.data.rows);
   };
 
-  const handleOrder = () => {
-    console.log("Order added");
+  const apiOrderSellerData = async () => {
+    const response = await API.get("order/by-seller");
+    console.log("order data ", response.data.rows);
+    setApiOrderSeller(response.data.rows);
   };
-
-  const productData: SellerProductData[] = [
-    {
-      sellerProductName: "Puma",
-      messageType: "Product",
-      totalstock: 20,
-      availablestock: 15,
-    },
-    {
-      sellerProductName: "Nike",
-      messageType: "Total Stock",
-      totalstock: 25,
-      availablestock: 20,
-    },
-    {
-      sellerProductName: "Adidas",
-      messageType: "Available Stock",
-      totalstock: 30,
-      availablestock: 25,
-    },
-  ];
-
-  const orderData: ShipperOrderData[] = [
-    {
-      shipperProductName: "Puma",
-      messageType: "Product",
-      label: "Label",
-      status: "Pending",
-    },
-    {
-      shipperProductName: "Nike",
-      messageType: "Used Stock",
-      label: "Label",
-      status: "Pending",
-    },
-    {
-      shipperProductName: "Adidas",
-      messageType: "Label",
-      label: "Label",
-      status: "Pending",
-    },
-    {
-      shipperProductName: "Asics",
-      messageType: "Status",
-      label: "Label",
-      status: "Pending",
-    },
-  ];
 
   const productColumns: TableColumn<SellerProductData>[] = [
     {
       name: "Product",
-      selector: (row) => row.sellerProductName,
-      sortable: false,
-      width: "30%",
+      selector: (row) => row.name,
+      sortable: true,
+      width: "25%",
     },
     {
-      name: "Total Stock",
-      selector: (row) => row.totalstock,
-      sortable: false,
-      width: "30%",
+      name: "Total Quantity",
+      selector: (row) => row.totalQuantity,
+      sortable: true,
+      width: "25%",
     },
     {
-      name: "Available Stock",
-      selector: (row) => row.availablestock,
-      sortable: false,
-      width: "30%",
+      name: "Available Quantity",
+      selector: (row) => row.availableQuantity,
+      sortable: true,
+      width: "25%",
+    },
+    {
+      name: "Created At",
+      selector: (row) => row.createdAt,
+      sortable: true,
+      width: "25%",
     },
   ];
 
   const orderColumns: TableColumn<ShipperOrderData>[] = [
     {
       name: "Product",
-      selector: (row) => row.shipperProductName,
-      sortable: false,
-      width: "25%",
+      selector: (row) => row.name,
+      sortable: true,
+      width: "20%",
     },
     {
-      name: "Used Stock",
-      selector: (row) => row.messageType,
-      sortable: false,
-      width: "25%",
+      name: "Used Quantity",
+      selector: (row) => row.usedQuantity,
+      sortable: true,
+      width: "20%",
     },
     {
       name: "Label",
       selector: (row) => row.label,
-      sortable: false,
-      width: "25%",
+      sortable: true,
+      width: "20%",
     },
     {
       name: "Status",
       selector: (row) => row.status,
-      sortable: false,
-      width: "25%",
+      sortable: true,
+      width: "20%",
+    },
+    {
+      name: "Created At",
+      selector: (row) => row.createdAt,
+      sortable: true,
+      width: "20%",
     },
   ];
 
-const getAllOrderProduct = ()=>{
-  const order = API.get("by-seller")
-console.log("Seller order :",order)
-const product = API.get("by-product")
-console.log("Seller Product :",product)
-
-}
-
+  const closePollModal = () => {
+    setIsPollPopupOpen(false);
+  };
+  const closePollOrderModal = () => {
+    setisPollPopupOrderOpen(false);
+  };
 
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col justify-center items-center w-screen py-5">
-          {/* w-full */}
-          <div className="mt-2 flex justify-end ">
+          <div className="mt-2 flex justify-end">
             <button
-              onClick={handleProduct}
+              onClick={() => setIsPollPopupOpen(true)}
               className="font-bold px-4 py-3 rounded-xl border hover:bg-black hover:text-white duration-300"
             >
               Add Product
             </button>
           </div>
           <div className="w-3/4">
-            <DataTable data={productData} columns={productColumns} />
+            <DataTable data={apiProductData} columns={productColumns} />
           </div>
         </div>
 
         <div className="flex flex-col justify-center items-center w-screen py-5">
-          {/* w-full */}
-          <div className="mt-2 flex justify-end ">
+          <div className="mt-2 flex justify-end">
             <button
-              onClick={handleOrder}
+              onClick={() => setisPollPopupOrderOpen(true)}
               className="font-bold px-4 py-3 rounded-xl border hover:bg-black hover:text-white duration-300"
             >
               Add Order
             </button>
           </div>
           <div className="w-3/4">
-            <DataTable data={orderData} columns={orderColumns} />
+            <DataTable data={apiOrderSeller} columns={orderColumns} /> 
           </div>
         </div>
       </div>
+
+      {isPollPopupOpen && <AddProduct onClose={closePollModal} />}
+      {isPollPopupOrderOpen && <AddorderData onClose={closePollOrderModal} />}
     </>
   );
 };

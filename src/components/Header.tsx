@@ -2,8 +2,12 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export const Header = () => {
   const location = useLocation();
+  
 
   const smallHeaderRoutes = ["/bots/*"].includes(location.pathname);
+  const handleLogout = ()=>{
+
+  }
 
   return (
     <header
@@ -26,7 +30,7 @@ export const Header = () => {
                 </NavLink>
               </li>
               <li>
-                <button
+                <button onClick={handleLogout}
                   className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer">
                   Logout
                 </button>

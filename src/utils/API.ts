@@ -1,7 +1,3 @@
-// import User from "./User";
-// import Error from "./Error";
-// import { handleError } from "../lib/errorHandler";
-
 export interface Res {
   success: boolean;
   status: number;
@@ -13,23 +9,19 @@ export interface Res {
 class API {
   static token: string = "";
 
-  static setToken(token: string) {
-    this.token = token;
-  }
-
   static async get(
     path: string | string[],
     resent: boolean = false
   ): Promise<Res> {
     return new Promise(async (resolve, reject) => {
       if (Array.isArray(path)) path = path.join("/");
-
+      const token = localStorage.getItem("accessToken")
       let headers = new Headers();
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-      if (this.token) {
-        headers.append("Authorization", `Bearer ${this.token}`);
+      if (token) {
+        headers.append("authorization", `Bearer ${token}`);
       }
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + path, {
@@ -64,12 +56,10 @@ class API {
       let headers = new Headers();
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-
-      if (this.token) {
-        headers.append("Authorization", `Bearer ${this.token}`);
+      const token = localStorage.getItem("accessToken")
+      if (token) {
+        headers.append("authorization", `Bearer ${token}`);
       }
-
-      console.log(process.env.REACT_APP_API_URL, path, "=======")
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + path, {
           method: "POST",
@@ -84,13 +74,9 @@ class API {
           resent,
           path
         );
-
-
-
           resolve(parsed);
       } catch (error: any) {
         reject(error);
-        //  handleError(error.code);
       }
     });
   }
@@ -256,10 +242,4 @@ class API {
     }
   }
 
-
-
 export default API;
-// export function post(arg0: string, userData: { type: string; name: string; email: string; password: string; }) {
-//   throw new Error("Function not implemented.");
-// }
-
