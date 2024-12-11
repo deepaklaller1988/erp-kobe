@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   
     try {
       const response = await API.post("auth/login", userData);
-      // console.log("API Response:", response); 
+      console.log("API Response:", response); 
       if (response.success === true) {
         const { accessToken} = response.data;
         localStorage.setItem("accessToken",accessToken)

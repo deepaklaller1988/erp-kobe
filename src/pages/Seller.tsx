@@ -17,8 +17,11 @@ const Seller = () => {
 
   useEffect(() => {
     apiProduct();
-    apiOrderSellerData();
   }, []);
+    useEffect(() => {
+      apiOrderSellerData();
+  }, []);
+
 
   const apiProduct = async () => {
     const response = await API.get("product/");
