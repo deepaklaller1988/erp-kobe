@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useTitle from "../hooks/useTitle";
+import API from "../utils/API";
 
 const ForgotPassword: React.FC = () => {
   useTitle({ title: "Forgot Password" });
@@ -14,6 +15,15 @@ const ForgotPassword: React.FC = () => {
   const handleEmail = async (event: React.FormEvent) => {
     event.preventDefault();
     setSuccess(null);
+    try {
+      const response = await API.post("auth/forgot-password",userData)
+      console.log("response",response)
+      setUserData({
+        email: "",   
+      });
+    } catch (error) {
+      console.log(error)
+    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors: any = {};
 
@@ -57,7 +67,7 @@ const ForgotPassword: React.FC = () => {
             type="submit"
             className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
           >
-            Send Verification Link
+            Send Password Link
           </button>
           {success && <p className="text-green-500">{success}</p>}
       </div>

@@ -86,11 +86,8 @@ class API {
         );
 
 
-        if (!parsed.success) {
-          reject(parsed);
-        } else {
+
           resolve(parsed);
-        }
       } catch (error: any) {
         reject(error);
         //  handleError(error.code);
@@ -136,9 +133,9 @@ class API {
           resolve(parsed);
         })
         .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
+          // if (err.status == undefined) {
+          //   // Route.load("/maintenance");
+          // }
           console.error(err);
         });
     });
@@ -182,9 +179,9 @@ class API {
           resolve(parsed);
         })
         .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
+          // if (err.status == undefined) {
+          //   // Route.load("/maintenance");
+          // }
           console.error(err);
         });
     });
@@ -229,9 +226,9 @@ class API {
           resolve(parsed);
         })
         .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
+          // if (err.status == undefined) {
+          //   // Route.load("/maintenance");
+          // }
           console.error(err);
         });
     });
@@ -243,29 +240,26 @@ class API {
     resent: boolean,
     path: string | string[]
   ): Promise<Res> {
-    try {
+    // try {
       let res: Res = await raw.json();
       res.success = raw.status >= 200 && raw.status < 300;
       res.status = raw.status;
       res.resend = resend;
       res.resent = resent;
-
-      if (!res.success) {
-        return await res
-      }
-
+      console.log("res",res)
       return res;
-    } catch (error) {
+
+    } catch (error:any) {
       console.error("Error parsing response:", error);
-      throw error;
+    //   throw error;
 
     }
   }
 
-}
+
 
 export default API;
-export function post(arg0: string, userData: { type: string; name: string; email: string; password: string; }) {
-  throw new Error("Function not implemented.");
-}
+// export function post(arg0: string, userData: { type: string; name: string; email: string; password: string; }) {
+//   throw new Error("Function not implemented.");
+// }
 

@@ -29,10 +29,10 @@ const Layout = () => {
       <div className="w-full flex flex-row lg:px-8 px-5">
         <Suspense fallback={<MiniLoader />}>
           <Routes>
-          <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/seller" element={<Seller />} />
             <Route path="/shipper" element={<Shipper />} />
-            <Route path="/invite" element={<Invite/>} />
+            <Route path="/invite" element={<Invite />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/forgotpassword" element={<ForgotPassword />} />

@@ -61,9 +61,6 @@ const Shipper = () => {
         sortable: false,
         width: "25%",
       },
-
-      
-   
     ];
     return (
       <div

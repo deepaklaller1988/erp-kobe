@@ -14,13 +14,6 @@ export const Header = () => {
       <div className="flex flex-col h-full justify-between">
         <div className="header-inner flex justify-between items-center">
           <div className="header-icon">
-            {/* <NavLink to="/">
-              <img
-                className="w-[120px]"
-                src="/erp.jpg"
-                alt="TikTok Logo"
-              />
-            </NavLink> */}
             <h1 className=" text-white font-bold text-2xl">ERP</h1>
           </div>
           <div className="menu-list">
