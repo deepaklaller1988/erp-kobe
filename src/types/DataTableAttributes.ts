@@ -3,6 +3,7 @@ import { Primitive } from "react-data-table-component/dist/DataTable/types";
 
 //Seller
 export interface SellerProductData {
+    productId: string;
     name: Primitive;
     totalQuantity: Primitive;
     availableQuantity: Primitive;
