@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 
 const Seller = lazy(() => import("./pages/Seller"));
 const Invite = lazy(() => import("./pages/Invite"));
-// const Shipper = lazy(() => import("./pages/Shipper"));
+const Shipper = lazy(() => import("./pages/Shipper"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
 const Verification = lazy(() => import("./pages/Verification"));
@@ -31,7 +31,7 @@ const Layout = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/seller" element={<Seller />} />
-            {/* <Route path="/shipper" element={<Shipper />} /> */}
+            <Route path="/shipper" element={<Shipper />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />

@@ -1,20 +1,23 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const Successmessage = () => {
-    const router = useNavigate();
+  const router = useNavigate();
 
-    const handleOk = () => {
-        router("/")
-    }
+  const handleOk = () => {
+    router("/");
+  };
 
-    return (
-        <div className='flex flex-col justify-center items-start w-full h-screen'>
-            <h1 className=''>Account Activated Successfully</h1>
-            <button
-                className='rounded-md p-3 px-5 transition text-white bg-green-500 items-center mt-8' onClick={handleOk}>OK
-            </button>
-        </div>
-    )
-}
+  return (
+    <div className="flex flex-col justify-center items-center w-full h-screen">
+      <h1 className="text-4xl">Account Activated Successfully</h1>
+      <button
+        className="text-xl font-bold px-10 py-3 rounded-xl border bg-black text-white hover:bg-black/70 duration-300 mt-8 duration-300"
+        onClick={handleOk}
+      >
+        OK
+      </button>
+    </div>
+  );
+};
 
-export default Successmessage
+export default Successmessage;
