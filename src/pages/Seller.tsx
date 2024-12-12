@@ -102,6 +102,10 @@ console.log(apiOrderSeller, '==============')
     },
   ];
 
+  useEffect(()=>{
+    closePollModal()
+    closePollOrderModal()
+  },[setIsPollPopupOpen,setisPollPopupOrderOpen])
   const closePollModal = () => {
     setIsPollPopupOpen(false);
   };
@@ -149,8 +153,8 @@ console.log(apiOrderSeller, '==============')
         </div>
       </div>
 
-      {isPollPopupOpen && <AddProduct onClose={closePollModal} />}
-      {isPollPopupOrderOpen && <AddorderData onClose={closePollOrderModal} />}
+      {isPollPopupOpen && <AddProduct onClose={closePollModal} onSuccess={apiProduct}/>}
+      {isPollPopupOrderOpen && <AddorderData onClose={closePollOrderModal} onSuccess={apiOrderSellerData} />}
     </>
   );
 };

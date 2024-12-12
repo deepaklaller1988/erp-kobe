@@ -109,7 +109,7 @@ const Register: React.FC = () => {
 
       submitForm();
     }
-  }, [isSubmitting]);
+  }, [isSubmitting,userData]);
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();

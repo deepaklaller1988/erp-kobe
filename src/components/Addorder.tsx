@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import API from '../utils/API';
 import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
+import MiniLoader from './MiniLoader';
 
 interface PollModalProps {
     onClose: () => void;
+    onSuccess:()=>void;
 }
 
-const AddorderData = ({ onClose }: PollModalProps) => {
+const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
     const [userData, setUserData] = useState({
         productId: "",
         label: "",
@@ -19,9 +21,10 @@ const AddorderData = ({ onClose }: PollModalProps) => {
     const [productIdError, setProductIdError] = useState<string | null>(null);
     const [quantityError, setQuantityError] = useState<string | null>(null);
     const [productIdData, setproductIdData] = useState<any[]>([]);
-    const [productDetails,setProductDetails]=useState<any>({})
+    const [productDetails, setProductDetails] = useState<any>({})
+    const [loading, setLoading] = useState(false);
 
-console.log("productDetails :",productDetails)
+    console.log("productDetails :", productDetails)
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -40,6 +43,7 @@ console.log("productDetails :",productDetails)
         try {
             const response = await API.post("order", data);
             console.log("Product added successfully:", response);
+            onSuccess();
         } catch (error) {
             console.error("Error during product submission:", error);
         }
@@ -100,8 +104,12 @@ console.log("productDetails :",productDetails)
                 setLabelError(null);
                 setProductIdError(null);
                 setQuantityError(null);
+                setLoading(true);
+                onClose();
             } catch (error) {
                 console.error("Error during product submission:", error);
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -148,7 +156,7 @@ console.log("productDetails :",productDetails)
                             label: items.name,
                             value: items.productId,
                             key: items.productId,
-                            availableQuantity:items.availableQuantity,
+                            availableQuantity: items.availableQuantity,
                         }))}
                         onChange={(item: any) => {
                             setProductDetails(item);
@@ -180,7 +188,7 @@ console.log("productDetails :",productDetails)
                 />
                 <p className="text-red-500">{labelError}</p>
 
-<p className='mt-5'>Available Quantity : {productDetails?.availableQuantity}</p>
+                <p className='mt-5'>Available Quantity : {productDetails?.availableQuantity}</p>
 
                 <p className="mt-2 mb-1 text-black">Used Quantity</p>
                 <input
@@ -194,12 +202,15 @@ console.log("productDetails :",productDetails)
                 <p className="text-red-500">{quantityError}</p>
 
                 <div className="text-center">
-                    <button
-                        onClick={handleSubmit}
-                        className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
-                    >
-                        Submit
-                    </button>
+                    {loading ? <MiniLoader /> :
+                        <button
+                            onClick={handleSubmit}
+                            className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+                            disabled={loading}
+                        >
+                            Submit
+                        </button>
+                    }
                 </div>
             </div>
         </div>

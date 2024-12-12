@@ -6,9 +6,9 @@ export const Header = () => {
 
   const handleLogout = async () => {
     await API.get(`auth/logout`);
-    await localStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
     router("auth/login");
-    console.log("User logged out");
+    // console.log("User logged out");
   };
 
   return (
