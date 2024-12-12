@@ -29,7 +29,7 @@ const Login: React.FC = () => {
       if (response.success === true) {
         const { accessToken } = response.data;
         localStorage.setItem("accessToken", accessToken);
-        router("/");
+        router(response.data.type === "seller" ? "/seller" : "/shipper");
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");
@@ -67,11 +67,12 @@ const Login: React.FC = () => {
 
   return (
     <>
-      
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
-            <h1 className="text-black font-bold text-5xl text-center">Sign in</h1>
+            <h1 className="text-black font-bold text-5xl text-center">
+              Sign in
+            </h1>
             <p className="mt-10 mb-1 text-black">Email</p>
             <input
               className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
@@ -108,18 +109,23 @@ const Login: React.FC = () => {
               </NavLink>
             </div>
 
-           
-          {loading ? <MiniLoader />: <button
-            type="submit"
-            className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
-          >
-            Login
-          </button>}    
-          
+            {loading ? (
+              <MiniLoader />
+            ) : (
+              <button
+                type="submit"
+                className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+              >
+                Login
+              </button>
+            )}
 
             <div className="mt-10 flex gap-2 text-black">
               <span>Don't have an account?</span>
-              <Link to="/auth/register" className="text-black hover:text-black/80 duration-300">
+              <Link
+                to="/auth/register"
+                className="text-black hover:text-black/80 duration-300"
+              >
                 Sign up
               </Link>
             </div>

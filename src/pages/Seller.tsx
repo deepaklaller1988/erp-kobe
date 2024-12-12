@@ -1,7 +1,10 @@
 import { TableColumn } from "react-data-table-component";
 import { DataTable } from "../components/DataTable";
 import useTitle from "../hooks/useTitle";
-import { SellerProductData, ShipperOrderData } from "../types/DataTableAttributes";
+import {
+  SellerProductData,
+  ShipperOrderData,
+} from "../types/DataTableAttributes";
 import AddProduct from "../components/Addproduct";
 import { useEffect, useState } from "react";
 import API from "../utils/API";
@@ -9,22 +12,20 @@ import AddorderData from "../components/Addorder";
 import MiniLoader from "../components/MiniLoader";
 
 const Seller = () => {
-  useTitle({ title: "Seller-Table" });
+  useTitle({ title: "Seller Dashboard" });
 
   const [isPollPopupOpen, setIsPollPopupOpen] = useState(false);
   const [isPollPopupOrderOpen, setisPollPopupOrderOpen] = useState(false);
   const [apiProductData, setApiProductData] = useState<SellerProductData[]>([]);
-  const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]); 
+  const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]);
   const [loading, setLoading] = useState(false);
 
-
-  useEffect(() => {   
+  useEffect(() => {
     apiProduct();
   }, []);
-    useEffect(() => {
-      apiOrderSellerData();
+  useEffect(() => {
+    apiOrderSellerData();
   }, []);
-
 
   const apiProduct = async () => {
     const response = await API.get("product/");
@@ -109,8 +110,8 @@ const Seller = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="flex flex-col justify-center items-center w-screen py-5">
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col justify-center items-center py-5 border">
           <div className="mt-2 flex justify-end w-[90%]">
             <button
               onClick={() => setIsPollPopupOpen(true)}
@@ -120,12 +121,15 @@ const Seller = () => {
             </button>
           </div>
           <div className="w-3/4">
-          {loading ? <MiniLoader/>:<DataTable data={apiProductData} columns={productColumns} />}
-            
+            {loading ? (
+              <MiniLoader />
+            ) : (
+              <DataTable data={apiProductData} columns={productColumns} />
+            )}
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-screen py-5">
+        <div className="flex flex-col justify-center items-center py-5">
           <div className="mt-2 flex justify-end">
             <button
               onClick={() => setisPollPopupOrderOpen(true)}
@@ -135,8 +139,11 @@ const Seller = () => {
             </button>
           </div>
           <div className="w-3/4">
-          {loading ? <MiniLoader/> :<DataTable data={apiOrderSeller} columns={orderColumns} /> }
-            
+            {loading ? (
+              <MiniLoader />
+            ) : (
+              <DataTable data={apiOrderSeller} columns={orderColumns} />
+            )}
           </div>
         </div>
       </div>
