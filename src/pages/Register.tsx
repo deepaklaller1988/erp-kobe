@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
-import useTitle from "../hooks/useTitle";
-import { FaBalanceScale } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaBalanceScale, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdDeliveryDining } from "react-icons/md";
-import { Link } from "react-router-dom";
 import API from "../utils/API";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MiniLoader from "../components/MiniLoader";
 
 const Register: React.FC = () => {
-  useTitle({ title: "Register" });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-
-
+  const [isSuccess, setIsSuccess] = useState(false);
   const [userData, setUserData] = useState({
     type: "",
     name: "",
@@ -21,211 +16,141 @@ const Register: React.FC = () => {
     password: "",
     confirmpassword: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [errors, setErrors] = useState({
-    type: "",
-    name: "",
-    email: "",
-    password: "",
-    confirmpassword: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const handleButtonClick = (role: string) => {
+  const handleRoleSelection = (role: string) => {
     setUserData((prev) => ({ ...prev, type: role }));
     setErrors((prev) => ({ ...prev, type: "" }));
   };
 
-  const validateInputs = () => {
+  const validateInputs = (): boolean => {
+    const { type, name, email, password, confirmpassword } = userData;
+    const newErrors: Record<string, string> = {};
+
+    if (!type) newErrors.type = "Please select a role.";
+    if (!name.trim()) newErrors.name = "Name is required.";
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    if (!email) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(email)) newErrors.email = "Please enter a valid email.";
 
-    const newErrors: any = {};
-
-    if (!userData.type) newErrors.type = "Please select a role.";
-    if (!userData.name.trim()) newErrors.name = "Name is required.";
-    if (!userData.email) {
-      newErrors.email = "Email is required.";
-    } else if (!emailRegex.test(userData.email)) {
-      newErrors.email = "Please enter a valid email.";
-    }
-    if (!userData.password) {
-      newErrors.password = "Password is required.";
-    } else if (!passwordRegex.test(userData.password)) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    if (!password) newErrors.password = "Password is required.";
+    else if (!passwordRegex.test(password)) {
       newErrors.password =
-        "Password must contain at least 8 characters, including uppercase, lowercase, a number, and a special character.";
+        "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
     }
-    if (!userData.confirmpassword) {
-      newErrors.confirmpassword = "Confirm Password is required.";
-    } else if (userData.password !== userData.confirmpassword) {
-      newErrors.confirmpassword = "Passwords do not match.";
-    }
+
+    if (!confirmpassword) newErrors.confirmpassword = "Confirm Password is required.";
+    else if (password !== confirmpassword) newErrors.confirmpassword = "Passwords do not match.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const resetForm = () => {
-    setUserData({
-      type: "",
-      name: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-    });
-    setErrors({
-      type: "",
-      name: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  useEffect(() => {
-    if (isSubmitting) {
-      const submitForm = async () => {
-        if (!validateInputs()) {
-          setIsSubmitting(false);
-          return;
-        }
-
-        try {
-          const response = await API.post("auth/register", userData);
-          if (response.status === 200) {
-            setIsSuccess(true);
-            resetForm();
-          }
-        } catch (error) {
-          console.error("Error during registration:", error);
-        } finally {
-          setIsSubmitting(false);
-          setLoading(false);
-        }
-      };
-
-      submitForm();
+ 
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validateInputs()) return;
+  setLoading(true);
+  try {
+    const response = await API.post("auth/register", userData);
+    if (response.success) {
+      setIsSuccess(true);
+      setUserData({ type: "", name: "", email: "", password: "", confirmpassword: "" });
+    } else if (response.error?.code === "ERR_EMAIL_ALREADY_EXIST") {
+      setErrors((prev) => ({ ...prev, email: "This email is already registered. Please use a different email." }));
     }
-  }, [isSubmitting,userData]);
+  } catch (error) {
+    console.error("Error during registration:", error);
+    setErrors((prev) => ({ ...prev, general: "An unexpected error occurred. Please try again later." }));
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleFormSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setLoading(true);
-  };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((prevState) => !prevState);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible((prevState) => !prevState);
-  };
+  const renderInputField = (
+    label: string,
+    type: string,
+    name: string,
+    value: string,
+    showToggleIcon = false,
+    toggleVisibility?: () => void
+  ) => (
+    <div className="mt-4">
+      <label className="mb-1 block text-black">{label}</label>
+      <div className="relative">
+        <input
+          className="w-full rounded-md p-3 outline-none border border-gray-300 text-black"
+          type={showToggleIcon && toggleVisibility ? (type === "password" ? "text" : "password") : type}
+          name={name}
+          value={value}
+          onChange={handleChange}
+        />
+        {showToggleIcon && toggleVisibility && (
+          <span
+            onClick={toggleVisibility}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          >
+            {type === "password" ? <FaEyeSlash />: <FaEye /> }
+          </span>
+        )}
+      </div>
+      {errors[name] && <p className="text-red-500 mt-2">{errors[name]}</p>}
+    </div>
+  );
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="w-96">
         {isSuccess ? (
-          <div className="text-green-500 text-center mt-4">
-            <p className="font-bold text-2xl">Registration successful! Kindly check your email to activate your account.</p>
+          <div className="text-green-500 text-center">
+            <p className="font-bold text-2xl">Registration successful! Check your email to activate your account.</p>
           </div>
         ) : (
-          <>
+          <form onSubmit={handleSubmit}>
             <h1 className="text-black font-bold text-5xl text-center">Register</h1>
+
             <p className="mt-10 mb-1 text-black">Choose Your Role</p>
-            <div className="flex justify-center items-center gap-5">
-              <button
-                className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 border-gray-200 text-gray-300 ${userData.type === "seller"
-                  ? "border-blue-600 !text-blue-600"
-                  : "hover:bg-gray-100"
+            <div className="flex justify-center gap-5">
+              {[{ role: "seller", icon: <FaBalanceScale size={35} />, label: "Seller" },
+                { role: "shipper", icon: <MdDeliveryDining size={35} />, label: "Shipper" }].map((item) => (
+                <button
+                  key={item.role}
+                  type="button"
+                  className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 text-gray-300 ${
+                    userData.type === item.role ? "border-blue-600 text-blue-600" : "hover:bg-gray-100"
                   }`}
-                onClick={() => handleButtonClick("seller")}
-              >
-                <FaBalanceScale size={35} />
-                Seller
-              </button>
-              <button
-                className={`p-5 rounded-xl flex flex-col items-center gap-1 w-full border duration-300 border-gray-200 text-gray-300 ${userData.type === "shipper"
-                  ? "border-blue-600 !text-blue-600"
-                  : "hover:bg-gray-100"
-                  }`}
-                onClick={() => handleButtonClick("shipper")}
-              >
-                <MdDeliveryDining size={35} />
-                Shipper
-              </button>
+                  onClick={() => handleRoleSelection(item.role)}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              ))}
             </div>
-            <p className="text-red-500 mt-2">{errors.type}</p>
+            {errors.type && <p className="text-red-500 mt-2">{errors.type}</p>}
 
-            <p className="mt-4 mb-1 text-black">Name</p>
-            <input
-              className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
-              type="text"
-              value={userData.name}
-              onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-            />
-            <p className="text-red-500 mt-2">{errors.name}</p>
+            {renderInputField("Name", "text", "name", userData.name)}
+            {renderInputField("Email", "email", "email", userData.email)}
+            {renderInputField("Password", passwordVisible ? "text" : "password", "password", userData.password, true, () => setPasswordVisible((prev) => !prev))}
+            {renderInputField("Confirm Password", confirmPasswordVisible ? "text" : "password", "confirmpassword", userData.confirmpassword, true, () => setConfirmPasswordVisible((prev) => !prev))}
 
-            <p className="mt-4 mb-1 text-black">Email</p>
-            <input
-              className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
-              type="email"
-              value={userData.email}
-              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-            />
-            <p className="text-red-500 mt-2">{errors.email}</p>
-
-            <p className="mt-4 mb-1 text-black">Password</p>
-            <div className="relative">
-              <input
-                className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
-                type={passwordVisible ? "text" : "password"}
-                value={userData.password}
-                onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-              />
-              <span
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              >
-                {passwordVisible ? <FaEye /> : <FaEyeSlash />}
-              </span>
-            </div>
-            <p className="text-red-500 mt-2">{errors.password}</p>
-
-            <p className="mt-4 mb-1 text-black">Confirm Password</p>
-            <div className="relative">
-              <input
-                className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
-                type={confirmPasswordVisible ? "text" : "password"}
-                value={userData.confirmpassword}
-                onChange={(e) => setUserData({ ...userData, confirmpassword: e.target.value })}
-              />
-              <span
-                onClick={toggleConfirmPasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              >
-                {confirmPasswordVisible ? <FaEye /> : <FaEyeSlash />}
-              </span>
-            </div>
-            <p className="text-red-500 mt-2">{errors.confirmpassword}</p>
-
-            {loading ? <MiniLoader />: <button
-              onClick={handleFormSubmit}
-              className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 w-full duration-300 mt-8"
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-md p-3 w-full bg-black text-white mt-8 hover:bg-black/80 transition duration-300"
             >
-              Sign up
-            </button>}
-
-            <div className="mt-10 flex gap-2 text-black">
-              <span>Already have an account?</span>
-              <Link to="/auth/login" className="text-blue-500 hover:underline">
-                Sign in
-              </Link>
-            </div>
-          </>
+              {loading ? <MiniLoader/> : "Sign up"}
+            </button>
+            {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
+          </form>
         )}
       </div>
     </div>

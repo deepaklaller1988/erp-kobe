@@ -64,10 +64,16 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
 
     const handleQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+    
         if (/^\d*$/.test(value)) {
-            setUserData({ ...userData, usedQuantity: value });
-            if (quantityError) {
+            const usedQuantityValue = parseInt(value, 10);
+            const availableQuantityValue = productDetails?.availableQuantity;
+    
+            if (usedQuantityValue >= availableQuantityValue) {
+                setQuantityError("Quantity cannot be more than the available quantity.");
+            } else {
                 setQuantityError(null);
+                setUserData({ ...userData, usedQuantity: value });
             }
         }
     };
@@ -80,6 +86,7 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
             valid = false;
         }
         if (!usedQuantity) {
+            
             setQuantityError("Used Quantity is required.");
             valid = false;
         }

@@ -148,7 +148,6 @@ console.log(apiOrderSeller, '==============')
           </div>
         </div>
       </div>
-
       {isPollPopupOpen && <AddProduct onClose={closePollModal} onSuccess={apiProduct}/>}
       {isPollPopupOrderOpen && <AddorderData onClose={closePollOrderModal} onSuccess={apiOrderSellerData} />}
     </>
