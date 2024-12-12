@@ -1,14 +1,31 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
   const router = useNavigate();
+  const [type, setType] = useState<string>();
+
+  useEffect(() => {
+    let type = localStorage.getItem("type");
+    setType(type ? type : "");
+  }, []);
 
   const handleLogout = async () => {
     await API.get(`auth/logout`);
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("type");
     router("auth/login");
-    // console.log("User logged out");
+  };
+
+  const gotoDashboard = () => {
+    if (type === "seller") {
+      router("/seller");
+    } else if (type === "shipper") {
+      router("/shipper");
+    } else {
+      window.alert("Not logged in");
+    }
   };
 
   return (
@@ -21,13 +38,23 @@ export const Header = () => {
           <div className="menu-list">
             <ul className="flex gap-3 items-center">
               <li>
-                <NavLink
-                  to="/invite"
+                <button
+                  onClick={gotoDashboard}
                   className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer"
                 >
-                  Invite Shipper
-                </NavLink>
+                  Dashboard
+                </button>
               </li>
+              {type === "seller" && (
+                <li>
+                  <NavLink
+                    to="/invite-shipper"
+                    className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer"
+                  >
+                    Invite Shipper
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <button
                   onClick={handleLogout}
