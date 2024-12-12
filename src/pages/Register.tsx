@@ -5,11 +5,14 @@ import { MdDeliveryDining } from "react-icons/md";
 import { Link } from "react-router-dom";
 import API from "../utils/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import MiniLoader from "../components/MiniLoader";
 
 const Register: React.FC = () => {
   useTitle({ title: "Register" });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const [userData, setUserData] = useState({
     type: "",
@@ -100,6 +103,7 @@ const Register: React.FC = () => {
           console.error("Error during registration:", error);
         } finally {
           setIsSubmitting(false);
+          setLoading(false);
         }
       };
 
@@ -110,6 +114,7 @@ const Register: React.FC = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
+    setLoading(true);
   };
 
   const togglePasswordVisibility = () => {
@@ -207,12 +212,12 @@ const Register: React.FC = () => {
             </div>
             <p className="text-red-500 mt-2">{errors.confirmpassword}</p>
 
-            <button
+            {loading ? <MiniLoader />: <button
               onClick={handleFormSubmit}
               className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 w-full duration-300 mt-8"
             >
               Sign up
-            </button>
+            </button>}
 
             <div className="mt-10 flex gap-2 text-black">
               <span>Already have an account?</span>

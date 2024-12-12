@@ -33,6 +33,7 @@ const Verification = () => {
   return (
     <>
       {type === "account-activation" ? <Successmessage /> : <Password />}
+      
     </>
   );
 };

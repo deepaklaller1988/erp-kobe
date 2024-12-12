@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import API from '../utils/API';
 import { IoCloseSharp } from "react-icons/io5";
+import Select from "react-select";
 interface PollModalProps {
     onClose: () => void;
 }
@@ -15,6 +16,7 @@ const AddorderData = ({ onClose }: PollModalProps) => {
     const [labelError, setLabelError] = useState<string | null>(null);
     const [productIdError, setProductIdError] = useState<string | null>(null);
     const [quantityError, setQuantityError] = useState<string | null>(null);
+    const [productId, setproductId] = useState<any>();
 
     const postProduct = async (data: { note: string; usedQuantity: string; productId: string; label: string }) => {
         try {
@@ -114,6 +116,33 @@ const AddorderData = ({ onClose }: PollModalProps) => {
                     onChange={handleProductid}
                 />
                 <p className="text-red-500">{productIdError}</p>
+                {/* select */}
+                {/* <div className="col-12 col-sm-6 mt-4">
+                  <label className="text-gray-500 text-[12px] font-medium">
+                    Country *
+                  </label>
+                  <Select
+                    name="countryId"
+                    value={userData.productId ? { label: productId?.find((product: any) => product.id === userData.productId)?.county_name, value: userData.productId } : null}
+                    menuShouldScrollIntoView={false}
+                    isClearable
+                    placeholder="Select a Country"
+                    className=" dropDownFixes rounded-md formDropDown mt-1 text-sm borderBottom"
+                    options={(productId || []).map(({ id, county_name }: any) => ({
+                      label: county_name,
+                      value: id,
+                      key: id
+                    }))}
+                    onChange={(item: any) => {
+                      handleChange("countryId", item?.value);
+                    }}
+                  />
+                  {errors.countryId && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.countryId}
+                    </p>
+                  )}
+                </div> */}
                 <p className="mt-5 mb-1 text-black">Order Name</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"

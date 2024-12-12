@@ -6,6 +6,7 @@ import AddProduct from "../components/Addproduct";
 import { useEffect, useState } from "react";
 import API from "../utils/API";
 import AddorderData from "../components/Addorder";
+import MiniLoader from "../components/MiniLoader";
 
 const Seller = () => {
   useTitle({ title: "Seller-Table" });
@@ -14,8 +15,10 @@ const Seller = () => {
   const [isPollPopupOrderOpen, setisPollPopupOrderOpen] = useState(false);
   const [apiProductData, setApiProductData] = useState<SellerProductData[]>([]);
   const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]); 
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+
+  useEffect(() => {   
     apiProduct();
   }, []);
     useEffect(() => {
@@ -25,8 +28,10 @@ const Seller = () => {
 
   const apiProduct = async () => {
     const response = await API.get("product/");
+    setLoading(true);
     console.log("product data ", response.data.rows);
     setApiProductData(response.data.rows);
+    setLoading(false);
   };
 
   const apiOrderSellerData = async () => {
@@ -106,7 +111,7 @@ const Seller = () => {
     <>
       <div className="flex flex-col">
         <div className="flex flex-col justify-center items-center w-screen py-5">
-          <div className="mt-2 flex justify-end">
+          <div className="mt-2 flex justify-end w-[90%]">
             <button
               onClick={() => setIsPollPopupOpen(true)}
               className="font-bold px-4 py-3 rounded-xl border hover:bg-black hover:text-white duration-300"
@@ -115,7 +120,8 @@ const Seller = () => {
             </button>
           </div>
           <div className="w-3/4">
-            <DataTable data={apiProductData} columns={productColumns} />
+          {loading ? <MiniLoader/>:<DataTable data={apiProductData} columns={productColumns} />}
+            
           </div>
         </div>
 
@@ -129,7 +135,8 @@ const Seller = () => {
             </button>
           </div>
           <div className="w-3/4">
-            <DataTable data={apiOrderSeller} columns={orderColumns} /> 
+          {loading ? <MiniLoader/> :<DataTable data={apiOrderSeller} columns={orderColumns} /> }
+            
           </div>
         </div>
       </div>

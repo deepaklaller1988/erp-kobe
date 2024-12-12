@@ -26,7 +26,7 @@ const Layout = () => {
   return (
     <div className="w-full flex flex-col bg-white duration-300">
       {!isAuthRoute && <Header />}
-      <div className="w-full flex flex-row lg:px-8 px-5">
+      <div className="w-full flex h-full flex-row">
         <Suspense fallback={<MiniLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
