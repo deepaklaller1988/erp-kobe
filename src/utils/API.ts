@@ -232,7 +232,7 @@ class API {
       res.status = raw.status;
       res.resend = resend;
       res.resent = resent;
-      console.log("res",res)
+      // console.log("res",res)
       return res;
 
     } catch (error:any) {

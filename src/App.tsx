@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Header } from "./components/Header";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import MiniLoader from "./components/MiniLoader";
 import Home from "./pages/Home";
 
@@ -15,6 +15,24 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const Layout = () => {
   const location = useLocation();
+  const router = useNavigate();
+
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("accessToken");
+      setToken(storedToken);
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!loading && !token && !["/auth/login", "/auth/register"].includes(location.pathname)) {
+      router("/auth/login");
+    }
+  }, [token, loading, location, router]);
 
   const isAuthRoute = [
     "/auth/login",
@@ -25,6 +43,7 @@ const Layout = () => {
 
   return (
     <div className="w-full flex flex-col bg-white duration-300">
+
       {!isAuthRoute && <Header />}
       <div className="w-full flex h-full flex-row">
         <Suspense fallback={<MiniLoader />}>

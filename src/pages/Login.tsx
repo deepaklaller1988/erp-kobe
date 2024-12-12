@@ -25,9 +25,10 @@ const Login: React.FC = () => {
 
     try {
       const response = await API.post("auth/login", userData);
-      // console.log("API Response:", response);
+    
       if (response.success === true) {
-        const { accessToken } = response.data;
+        const { accessToken } = response.data
+          console.log("token Response:", response.data);
         localStorage.setItem("accessToken", accessToken);
         router(response.data.type === "seller" ? "/seller" : "/shipper");
       } else {

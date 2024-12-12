@@ -6,30 +6,28 @@ import MiniLoader from './MiniLoader';
 
 interface PollModalProps {
     onClose: () => void;
-    onSuccess:()=>void;
+    onSuccess: () => void;
 }
 
-const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
+const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     const [userData, setUserData] = useState({
         productId: "",
-        label: "",
         note: "",
         usedQuantity: "",
+        label: "", // We'll store the label file name here
     });
     const [productError, setProductError] = useState<string | null>(null);
     const [labelError, setLabelError] = useState<string | null>(null);
     const [productIdError, setProductIdError] = useState<string | null>(null);
     const [quantityError, setQuantityError] = useState<string | null>(null);
     const [productIdData, setproductIdData] = useState<any[]>([]);
-    const [productDetails, setProductDetails] = useState<any>({})
+    const [productDetails, setProductDetails] = useState<any>({});
     const [loading, setLoading] = useState(false);
 
-    console.log("productDetails :", productDetails)
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await API.get("product/");
-                // console.log("=====-----",response.data.rows)
                 setproductIdData(response.data.rows);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -37,12 +35,10 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
         };
         fetchProducts();
     }, []);
-    // console.log("productIdData :", productIdData)
 
     const postProduct = async (data: { note: string; usedQuantity: string; productId: string; label: string }) => {
         try {
             const response = await API.post("order", data);
-            console.log("Product added successfully:", response);
             onSuccess();
         } catch (error) {
             console.error("Error during product submission:", error);
@@ -55,26 +51,27 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
             setProductError(null);
         }
     };
-    const handleLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserData({ ...userData, label: e.target.value });
-        if (labelError) {
-            setLabelError(null);
-        }
-    };
 
     const handleQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-    
+
         if (/^\d*$/.test(value)) {
             const usedQuantityValue = parseInt(value, 10);
             const availableQuantityValue = productDetails?.availableQuantity;
-    
+
             if (usedQuantityValue >= availableQuantityValue) {
                 setQuantityError("Quantity cannot be more than the available quantity.");
             } else {
                 setQuantityError(null);
                 setUserData({ ...userData, usedQuantity: value });
             }
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        if (file) {
+            setUserData({ ...userData, label: file.name }); // Store the file name in label
         }
     };
 
@@ -86,7 +83,6 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
             valid = false;
         }
         if (!usedQuantity) {
-            
             setQuantityError("Used Quantity is required.");
             valid = false;
         }
@@ -95,7 +91,7 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
             valid = false;
         }
         if (!label) {
-            setLabelError("Label is required.");
+            setLabelError("Label file is required.");
             valid = false;
         }
         if (valid) {
@@ -134,8 +130,6 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
                 [name]: value,
             }));
         }
-
-
     };
 
     return (
@@ -170,9 +164,10 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
                             handleChange("productId", item?.value);
                         }}
                     />
-
                     <p className="text-red-500">{productIdError}</p>
                 </div>
+
+                {/* Note Input */}
                 <p className="mt-5 mb-1 text-black">Note</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
@@ -184,30 +179,34 @@ const AddorderData = ({ onClose ,onSuccess}: PollModalProps) => {
                 />
                 <p className="text-red-500">{productError}</p>
 
-                <p className="mt-5 mb-1 text-black">Label</p>
+                {/* Label File Upload */}
+                <p className="mt-5 mb-1 text-black">Label (Upload File)</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
-                    type="text"
+                    type="file"
                     name="label"
-                    required
-                    value={userData.label}
-                    onChange={handleLabel}
+                    onChange={handleFileChange}
                 />
                 <p className="text-red-500">{labelError}</p>
 
-                <p className='mt-5'>Available Quantity : {productDetails?.availableQuantity}</p>
+                {/* Display uploaded file name */}
+                {userData.label && <p>Uploaded file: {userData.label}</p>}
 
+                <p className='mt-5'>Available Quantity: {productDetails?.availableQuantity}</p>
+
+                {/* Used Quantity */}
                 <p className="mt-2 mb-1 text-black">Used Quantity</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
                     type="text"
-                    name="totalQuantity"
+                    name="usedQuantity"
                     required
                     value={userData.usedQuantity}
                     onChange={handleQuantity}
                 />
                 <p className="text-red-500">{quantityError}</p>
 
+                {/* Submit Button */}
                 <div className="text-center">
                     {loading ? <MiniLoader /> :
                         <button

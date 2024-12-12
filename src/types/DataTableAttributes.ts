@@ -7,7 +7,7 @@ export interface SellerProductData {
     name: Primitive;
     totalQuantity: Primitive;
     availableQuantity: Primitive;
-    createdAt:Primitive;
+    createdAt:any;
 }
 export interface SellerProductAttributes {
     data: SellerProductData[];
