@@ -1,42 +1,47 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Header } from "./components/Header";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import MiniLoader from "./components/MiniLoader";
 import Home from "./pages/Home";
-
-const Seller = lazy(() => import("./pages/Seller"));
-const Invite = lazy(() => import("./pages/Invite"));
-const Shipper = lazy(() => import("./pages/Shipper"));
-const Register = lazy(() => import("./pages/Register"));
-const Login = lazy(() => import("./pages/Login"));
-const Verification = lazy(() => import("./pages/Verification"));
-const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+import Seller from "./pages/Seller";
+import Shipper from "./pages/Shipper";
+import Invite from "./pages/Invite";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import Verification from "./pages/Verification";
+import NotFound from "./pages/NotFound";
 
 const Layout = () => {
   const location = useLocation();
-  const router = useNavigate();
+  const navigate = useNavigate();
 
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("accessToken");
-      setToken(storedToken);
-      setLoading(false);
-    }
+    const storedToken = localStorage.getItem("accessToken");
+    console.log("storedToken",storedToken)
+    setToken(storedToken);
+    setLoading(false); // Set loading to false once the token is checked
   }, []);
 
   useEffect(() => {
-    if (!loading && !token && !["/auth/login", "/auth/register"].includes(location.pathname)) {
-      router("/auth/login");
+    if (loading) return; // Skip the logic until we are done with loading
+
+    const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
+    const isAuthRoute = authRoutes.includes(location.pathname);
+
+    // If the user is not authenticated and not on an auth route, redirect to login
+    if (!token && !isAuthRoute) {
+      navigate("/auth/login", { replace: true });
     }
 
-    if (!loading && token && ["/auth/login", "/auth/register"].includes(location.pathname)) {
-      router("/");
+    // If the user is authenticated and on an auth route, redirect to home
+    if (token && isAuthRoute) {
+      navigate("/", { replace: true });
     }
-  }, [token, loading, location, router]);
+  }, [token, loading, location.pathname, navigate]);
 
   const isAuthRoute = [
     "/auth/login",
@@ -47,7 +52,6 @@ const Layout = () => {
 
   return (
     <div className="w-full flex flex-col bg-white duration-300">
-      {/* Render Header only for non-auth routes */}
       {!isAuthRoute && <Header />}
       <div className="w-full flex h-full flex-row">
         <Suspense fallback={<MiniLoader />}>
