@@ -54,9 +54,9 @@ const AddorderData = ({ onClose }: PollModalProps) => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const { note, usedQuantity, productId, label } = userData;
-
+    
         let valid = true;
         if (!note) {
             setProductError("Order name is required.");
@@ -74,11 +74,25 @@ const AddorderData = ({ onClose }: PollModalProps) => {
             setLabelError("Label is required.");
             valid = false;
         }
-
         if (valid) {
-            postProduct({ ...userData });
+            try {
+                await postProduct({ ...userData });
+                setUserData({
+                    productId: "",
+                    label: "",
+                    note: "",
+                    usedQuantity: "",
+                });
+                setProductError(null);
+                setLabelError(null);
+                setProductIdError(null);
+                setQuantityError(null);
+            } catch (error) {
+                console.error("Error during product submission:", error);
+            }
         }
     };
+    
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
