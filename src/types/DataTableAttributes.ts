@@ -16,12 +16,13 @@ export interface SellerProductAttributes {
 
 //shipper
 export interface ShipperOrderData {
+    productId: string;
     name: string;
     usedQuantity: string;
-    label:string,
-    status:string,
-    createdAt:string,
-    products:any[]
+    label: string,
+    status: string,
+    createdAt: string,
+    products: any[]
 }
 
 export interface ShipperOrderAttributes {
