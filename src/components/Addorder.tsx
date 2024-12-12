@@ -38,7 +38,7 @@ console.log("productDetails :",productDetails)
 
     const postProduct = async (data: { note: string; usedQuantity: string; productId: string; label: string }) => {
         try {
-            const response = await API.post("order/by-order", data);
+            const response = await API.post("order", data);
             console.log("Product added successfully:", response);
         } catch (error) {
             console.error("Error during product submission:", error);
