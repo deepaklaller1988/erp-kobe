@@ -102,10 +102,6 @@ console.log(apiOrderSeller, '==============')
     },
   ];
 
-  useEffect(()=>{
-    closePollModal()
-    closePollOrderModal()
-  },[setIsPollPopupOpen,setisPollPopupOrderOpen])
   const closePollModal = () => {
     setIsPollPopupOpen(false);
   };
