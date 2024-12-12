@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MiniLoader from "../components/MiniLoader";
+// import { toasterSuccess } from "../components/core/Toaster";
 
 const Login: React.FC = () => {
   useTitle({ title: "Login" });
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("type", type);
         router(response.data.type === "seller" ? "/seller" : "/shipper");
+        // toasterSuccess(response.result,1000, "id")
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");

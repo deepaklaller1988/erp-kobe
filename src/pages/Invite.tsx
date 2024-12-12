@@ -10,6 +10,8 @@ const Invite = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProcessed, setIsProcessed] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+
 
   const getQueryParam = (name: string) => {
     const urlParams = new URLSearchParams(location.search);
@@ -74,6 +76,7 @@ const Invite = () => {
   const formSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateInputs()) {
+      setLoading(true);
       try {
         const response = await API.post("seller-shipper/invitation", {
           shipperEmail: shipperEmail,
@@ -85,6 +88,8 @@ const Invite = () => {
       } catch (error) {
         console.error("Error sending invite:", error);
         setEmailError("An error occurred while sending the invitation.");
+      }finally{
+        setLoading(false);
       }
     }
   };
@@ -140,12 +145,13 @@ const Invite = () => {
                 <p className="text-red-500 text-sm">{emailError}</p>
               )}
             </div>
-            <button
+            {loading ? <MiniLoader/> :  <button
               type="submit"
               className="rounded-md p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-2 w-full"
             >
               Send
-            </button>
+            </button>}
+           
           </form>
         </>
       )}

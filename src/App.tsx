@@ -32,6 +32,10 @@ const Layout = () => {
     if (!loading && !token && !["/auth/login", "/auth/register"].includes(location.pathname)) {
       router("/auth/login");
     }
+
+    if (!loading && token && ["/auth/login", "/auth/register"].includes(location.pathname)) {
+      router("/");
+    }
   }, [token, loading, location, router]);
 
   const isAuthRoute = [
@@ -43,7 +47,7 @@ const Layout = () => {
 
   return (
     <div className="w-full flex flex-col bg-white duration-300">
-
+      {/* Render Header only for non-auth routes */}
       {!isAuthRoute && <Header />}
       <div className="w-full flex h-full flex-row">
         <Suspense fallback={<MiniLoader />}>
