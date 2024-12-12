@@ -29,14 +29,14 @@ const Seller = () => {
   const apiProduct = async () => {
     const response = await API.get("product/");
     setLoading(true);
-    console.log("product data ", response.data.rows);
+    // console.log("product data ", response.data.rows);
     setApiProductData(response.data.rows);
     setLoading(false);
   };
 
   const apiOrderSellerData = async () => {
     const response = await API.get("order/by-seller");
-    console.log("order data ", response.data.rows);
+    // console.log("order data ", response.data.rows);
     setApiOrderSeller(response.data.rows);
   };
 
@@ -66,11 +66,11 @@ const Seller = () => {
       width: "25%",
     },
   ];
-
+console.log(apiOrderSeller, '==============')
   const orderColumns: TableColumn<ShipperOrderData>[] = [
     {
       name: "Product",
-      selector: (row) => row.name,
+      selector: (row) => row.products[0].name,
       sortable: true,
       width: "20%",
     },
@@ -85,6 +85,7 @@ const Seller = () => {
       selector: (row) => row.label,
       sortable: true,
       width: "20%",
+      cell: (row) => <button className="px-8 py-3 rounded-xl border bg-blue-400 text-white">View</button>,
     },
     {
       name: "Status",
@@ -126,7 +127,7 @@ const Seller = () => {
         </div>
 
         <div className="flex flex-col justify-center items-center w-screen py-5">
-          <div className="mt-2 flex justify-end">
+          <div className="mt-2 flex justify-end w-[90%]">
             <button
               onClick={() => setisPollPopupOrderOpen(true)}
               className="font-bold px-4 py-3 rounded-xl border hover:bg-black hover:text-white duration-300"

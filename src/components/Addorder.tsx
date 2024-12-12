@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import API from '../utils/API';
 import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
+
 interface PollModalProps {
     onClose: () => void;
 }
+
 const AddorderData = ({ onClose }: PollModalProps) => {
     const [userData, setUserData] = useState({
         productId: "",
@@ -16,7 +18,23 @@ const AddorderData = ({ onClose }: PollModalProps) => {
     const [labelError, setLabelError] = useState<string | null>(null);
     const [productIdError, setProductIdError] = useState<string | null>(null);
     const [quantityError, setQuantityError] = useState<string | null>(null);
-    const [productId, setproductId] = useState<any>();
+    const [productIdData, setproductIdData] = useState<any[]>([]);
+    const [productDetails,setProductDetails]=useState<any>({})
+
+console.log("productDetails :",productDetails)
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await API.get("product/");
+                // console.log("=====-----",response.data.rows)
+                setproductIdData(response.data.rows);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        fetchProducts();
+    }, []);
+    // console.log("productIdData :", productIdData)
 
     const postProduct = async (data: { note: string; usedQuantity: string; productId: string; label: string }) => {
         try {
@@ -39,12 +57,6 @@ const AddorderData = ({ onClose }: PollModalProps) => {
             setLabelError(null);
         }
     };
-    const handleProductid = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserData({ ...userData, productId: e.target.value });
-        if (productIdError) {
-            setProductIdError(null);
-        }
-    };
 
     const handleQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -58,7 +70,6 @@ const AddorderData = ({ onClose }: PollModalProps) => {
 
     const handleSubmit = async () => {
         const { note, usedQuantity, productId, label } = userData;
-    
         let valid = true;
         if (!note) {
             setProductError("Order name is required.");
@@ -69,7 +80,7 @@ const AddorderData = ({ onClose }: PollModalProps) => {
             valid = false;
         }
         if (!productId) {
-            setProductIdError("Order Id is required.");
+            setProductIdError("Product ID is required.");
             valid = false;
         }
         if (!label) {
@@ -94,7 +105,23 @@ const AddorderData = ({ onClose }: PollModalProps) => {
             }
         }
     };
-    
+
+    const handleChange = (e: any, inputValue?: any) => {
+        if (e === "productId") {
+            setUserData((prevData: any) => ({
+                ...prevData,
+                productId: inputValue,
+            }));
+        } else {
+            const { name, value } = e.target;
+            setUserData((prevData: any) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+
+
+    };
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
@@ -106,44 +133,32 @@ const AddorderData = ({ onClose }: PollModalProps) => {
                     <IoCloseSharp size={24} />
                 </button>
                 <h1 className="mt-5 mb-1 text-black font-bold items-center">Add Order</h1>
+
+                {/* Product ID Dropdown */}
                 <p className="mt-5 mb-1 text-black">Product ID</p>
-                <input
-                    className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
-                    type="text"
-                    name="productId"
-                    required
-                    value={userData.productId}
-                    onChange={handleProductid}
-                />
-                <p className="text-red-500">{productIdError}</p>
-                {/* select */}
-                {/* <div className="col-12 col-sm-6 mt-4">
-                  <label className="text-gray-500 text-[12px] font-medium">
-                    Country *
-                  </label>
-                  <Select
-                    name="countryId"
-                    value={userData.productId ? { label: productId?.find((product: any) => product.id === userData.productId)?.county_name, value: userData.productId } : null}
-                    menuShouldScrollIntoView={false}
-                    isClearable
-                    placeholder="Select a Country"
-                    className=" dropDownFixes rounded-md formDropDown mt-1 text-sm borderBottom"
-                    options={(productId || []).map(({ id, county_name }: any) => ({
-                      label: county_name,
-                      value: id,
-                      key: id
-                    }))}
-                    onChange={(item: any) => {
-                      handleChange("countryId", item?.value);
-                    }}
-                  />
-                  {errors.countryId && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.countryId}
-                    </p>
-                  )}
-                </div> */}
-                <p className="mt-5 mb-1 text-black">Order Name</p>
+                <div className="col-12 col-sm-6 mt-4">
+                    <Select
+                        name="productId"
+                        value={userData.productId ? { label: productIdData.find((product: any) => product.productId === userData.productId)?.name, value: userData.productId } : null}
+                        menuShouldScrollIntoView={false}
+                        isClearable
+                        placeholder="Select a Product"
+                        className="dropDownFixes rounded-md formDropDown mt-1 text-sm borderBottom"
+                        options={productIdData.map((items: any) => ({
+                            label: items.name,
+                            value: items.productId,
+                            key: items.productId,
+                            availableQuantity:items.availableQuantity,
+                        }))}
+                        onChange={(item: any) => {
+                            setProductDetails(item);
+                            handleChange("productId", item?.value);
+                        }}
+                    />
+
+                    <p className="text-red-500">{productIdError}</p>
+                </div>
+                <p className="mt-5 mb-1 text-black">Note</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
                     type="text"
@@ -165,7 +180,9 @@ const AddorderData = ({ onClose }: PollModalProps) => {
                 />
                 <p className="text-red-500">{labelError}</p>
 
-                <p className="mt-5 mb-1 text-black">Used Quantity</p>
+<p className='mt-5'>Available Quantity : {productDetails?.availableQuantity}</p>
+
+                <p className="mt-2 mb-1 text-black">Used Quantity</p>
                 <input
                     className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
                     type="text"
@@ -175,17 +192,18 @@ const AddorderData = ({ onClose }: PollModalProps) => {
                     onChange={handleQuantity}
                 />
                 <p className="text-red-500">{quantityError}</p>
+
                 <div className="text-center">
                     <button
                         onClick={handleSubmit}
-                        className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300">
+                        className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+                    >
                         Submit
                     </button>
                 </div>
             </div>
         </div>
-
     );
-}
+};
 
-export default AddorderData
+export default AddorderData;

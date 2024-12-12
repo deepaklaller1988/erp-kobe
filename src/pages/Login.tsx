@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useTitle from "../hooks/useTitle";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
@@ -25,11 +25,11 @@ const Login: React.FC = () => {
 
     try {
       const response = await API.post("auth/login", userData);
-      console.log("API Response:", response);
+      // console.log("API Response:", response);
       if (response.success === true) {
         const { accessToken } = response.data;
         localStorage.setItem("accessToken", accessToken);
-        router("/");
+        router("/seller");
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");

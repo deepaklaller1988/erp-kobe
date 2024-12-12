@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Table from "react-data-table-component";
-import CustomPagination from "./CustomPagination";
+// import CustomPagination from "./CustomPagination";
 import { TableColumn } from "react-data-table-component";
 
 export interface DataTableProps<T> {
@@ -77,11 +77,11 @@ export const DataTable = <T,>({ data, columns }: DataTableProps<T>) => {
           },
         ]}
       />
-      <CustomPagination
+      {/* <CustomPagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
-      />
+      /> */}
     </>
   );
 };

@@ -20,6 +20,7 @@ export interface ShipperOrderData {
     label:string,
     status:string,
     createdAt:string,
+    products:any[]
 }
 
 export interface ShipperOrderAttributes {
