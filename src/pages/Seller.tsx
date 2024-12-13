@@ -7,22 +7,25 @@ import MiniLoader from "../components/MiniLoader";
 import API from "../utils/API";
 import AddProduct from "../components/Addproduct";
 import AddorderData from "../components/Addorder";
-import { SellerProductData, ShipperOrderData } from "../types/DataTableAttributes";
+import {
+  SellerProductData,
+  ShipperOrderData,
+} from "../types/DataTableAttributes";
 
 const Seller = () => {
-
   const [ordersOfSingleProduct, setOrdersOfSingleProduct] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
+  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(
+    null
+  );
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showAddOrder, setShowAddOrder] = useState(false);
   const [apiProductData, setApiProductData] = useState<SellerProductData[]>([]);
   const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]);
-console.log("apiOrderSeller :",apiOrderSeller)
-console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
-  useEffect(() => {
-    apiOrderSellerData();
-  }, []);
+
+  // useEffect(() => {
+  //   apiOrderSellerData();
+  // }, []);
   useEffect(() => {
     apiProduct();
   }, []);
@@ -40,7 +43,6 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
       const response = await API.get(
         `order/by-product?productId=${productId}&page=1&limit=10`
       );
-      console.log("ordersOfSingleProduct : ====",response.data.rows)
       setOrdersOfSingleProduct(response.data.rows);
     } catch (error) {
       console.error("Error fetching product orders:", error);
@@ -60,9 +62,17 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
 
   const apiOrderSellerData = async () => {
     const response = await API.get("order/by-seller");
-    // console.log("order name : ======",response.data.rows)
     setApiOrderSeller(response.data.rows);
   };
+
+  const handleView = (url: string) => {
+    if (url) {
+      window.open(`${process.env.REACT_APP_API_URL}${url}`, "_blank");
+    } else {
+      alert("No file uploaded");
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col justify-center items-center py-5">
@@ -105,7 +115,9 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
                   >
                     <section
                       className="flex flex-row gap-0 justify-between p-5 cursor-pointer"
-                      onClick={() => handleAccordionClick(itemIndex, item.productId)}
+                      onClick={() =>
+                        handleAccordionClick(itemIndex, item.productId)
+                      }
                     >
                       <div className="w-full flex gap-3 sm:gap-6 items-center justify-between">
                         <div className="flex flex-row items-center justify-around w-full">
@@ -138,8 +150,7 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
                           <MiniLoader />
                         ) : (
                           <DataTable
-                            data={ordersOfSingleProduct }
-                   
+                            data={ordersOfSingleProduct}
                             columns={[
                               {
                                 name: "Product",
@@ -155,7 +166,10 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
                                 name: "Label",
                                 selector: (row: any) => row.label,
                                 cell: (row: any) => (
-                                  <button className="px-8 py-3 rounded-xl border bg-blue-400 text-white">
+                                  <button
+                                    className="px-8 py-3 rounded-xl border bg-blue-400 text-white"
+                                    onClick={() => handleView(row.label)}
+                                  >
                                     View
                                   </button>
                                 ),
@@ -185,10 +199,16 @@ console.log("ordersOfSingleProduct :",ordersOfSingleProduct)
       </div>
 
       {showAddProduct && (
-        <AddProduct onClose={() => setShowAddProduct(false)} onSuccess={apiProduct} />
+        <AddProduct
+          onClose={() => setShowAddProduct(false)}
+          onSuccess={apiProduct}
+        />
       )}
       {showAddOrder && (
-        <AddorderData onClose={() => setShowAddOrder(false)} onSuccess={apiOrderSellerData} />
+        <AddorderData
+          onClose={() => setShowAddOrder(false)}
+          onSuccess={apiOrderSellerData}
+        />
       )}
     </div>
   );

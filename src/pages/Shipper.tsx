@@ -36,9 +36,8 @@ const Shipper = () => {
   const getAllOrdersOfaSeller = async () => {
     setLoading(true);
     const response = await API.get(
-      `seller-shipper/get-orders?sellerId=${shipperData[openAccordionIndex].productId}&page=1&limit=10`
+      `seller-shipper/get-orders?sellerId=${shipperData[openAccordionIndex].sellerId}&page=1&limit=10`
     );
-    console.log(openAccordionIndex, response, "222222222222");
     setOrdersOfSingleSeller(response.data.rows);
     setLoading(false);
   };
@@ -96,11 +95,8 @@ const Shipper = () => {
           <MiniLoader />
         ) : (
           <div className="w-full p-5 flex flex-col gap-2 h-full">
-            <div className="flex flex-row justify-around">
-              <h3>PRODUCT</h3>
-              <h3>TOTAL QUANTITY</h3>
-              <h3>AVAILABLE QUANTITY</h3>
-              <h3>DATE OF CREATION</h3>
+            <div className="flex flex-row justify-start">
+              <h3>SELLERS</h3>
             </div>
             {!shipperData || shipperData.length === 0 ? (
               <p className="text-center text-gray-500 mt-4">
@@ -122,13 +118,10 @@ const Shipper = () => {
                       onClick={() => handleAccordionClick(itemIndex)}
                     >
                       <div className="w-full flex gap-3 sm:gap-6 items-center justify-between">
-                        <div className="flex flex-row items-center justify-around w-full">
+                        <div className="flex flex-row items-center justify-start w-full">
                           <p className="text-black font-semibold">
-                            {item?.name}
+                            {item?.seller_name}
                           </p>
-                          <p>{item?.totalQuantity}</p>
-                          <p>{item?.availableQuantity}</p>
-                          <p>{item?.createdAt}</p>
                         </div>
                         <p>
                           {itemIndex === openAccordionIndex ? (

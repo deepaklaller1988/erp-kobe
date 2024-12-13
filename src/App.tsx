@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Header } from "./components/Header";
 import { Suspense, useEffect, useState } from "react";
 import MiniLoader from "./components/MiniLoader";
@@ -21,27 +27,27 @@ const Layout = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
-    console.log("storedToken",storedToken)
+    console.log("storedToken", storedToken);
     setToken(storedToken);
     setLoading(false); // Set loading to false once the token is checked
   }, []);
 
-  useEffect(() => {
-    if (loading) return; // Skip the logic until we are done with loading
+  // useEffect(() => {
+  //   if (loading) return; // Skip the logic until we are done with loading
 
-    const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
-    const isAuthRoute = authRoutes.includes(location.pathname);
+  //   const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
+  //   const isAuthRoute = authRoutes.includes(location.pathname);
 
-    // If the user is not authenticated and not on an auth route, redirect to login
-    if (!token && !isAuthRoute) {
-      navigate("/auth/login", { replace: true });
-    }
+  //   // If the user is not authenticated and not on an auth route, redirect to login
+  //   if (!token && !isAuthRoute) {
+  //     navigate("/auth/login", { replace: true });
+  //   }
 
-    // If the user is authenticated and on an auth route, redirect to home
-    if (token && isAuthRoute) {
-      navigate("/", { replace: true });
-    }
-  }, [token, loading, location.pathname, navigate]);
+  //   // If the user is authenticated and on an auth route, redirect to home
+  //   if (token && isAuthRoute) {
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [token, loading, location.pathname, navigate]);
 
   const isAuthRoute = [
     "/auth/login",
