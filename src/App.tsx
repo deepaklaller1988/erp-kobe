@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import Verification from "./pages/Verification";
 import NotFound from "./pages/NotFound";
+import { ToastContainer } from "react-toastify";
 
 const Layout = () => {
   const location = useLocation();
@@ -71,6 +72,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout />
+      <ToastContainer />
     </BrowserRouter>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import API from '../utils/API';
 import { IoCloseSharp } from "react-icons/io5";
 import MiniLoader from './MiniLoader';
+import { toast } from 'react-toastify';
 
 interface PollModalProps {
     onClose: () => void;
@@ -16,14 +17,27 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
     const [productError, setProductError] = useState<string | null>(null);
     const [quantityError, setQuantityError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const showToast = (type: "success" | "error" | "warn", message: string) => {
+        toast[type](message, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
+      };
 
     const postProduct = async (data: { name: string; totalQuantity: string }) => {
         try {
             const response = await API.post("product", data);
+            showToast("success", "Product added successfully");
             onSuccess();
             console.log("Product added successfully:", response);
         } catch (error) {
             console.error("Error during product submission:", error);
+            showToast("error", "An error occurred while adding product");
         } finally {
             setLoading(false);
         }

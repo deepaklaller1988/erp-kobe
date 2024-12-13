@@ -3,6 +3,8 @@ import { FaBalanceScale, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdDeliveryDining } from "react-icons/md";
 import API from "../utils/API";
 import MiniLoader from "../components/MiniLoader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,6 +19,17 @@ const Register: React.FC = () => {
     confirmpassword: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const showToast = (type: "success" | "error" | "warn", message: string) => {
+    toast[type](message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
 
   const handleRoleSelection = (role: string) => {
     setUserData((prev) => ({ ...prev, type: role }));
@@ -27,26 +40,35 @@ const Register: React.FC = () => {
     const { type, name, email, password, confirmpassword } = userData;
     const newErrors: Record<string, string> = {};
 
-    if (!type) newErrors.type = "Please select a role.";
-    if (!name.trim()) newErrors.name = "Name is required.";
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) newErrors.email = "Email is required.";
-    else if (!emailRegex.test(email)) newErrors.email = "Please enter a valid email.";
-
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-    if (!password) newErrors.password = "Password is required.";
-    else if (!passwordRegex.test(password)) {
-      newErrors.password =
-        "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
+    if (!type) {
+      newErrors.type = "Please select a role.";
+    }
+    if (!name.trim()) {
+      newErrors.name = "Name is required.";
     }
 
-    if (!confirmpassword) newErrors.confirmpassword = "Confirm Password is required.";
-    else if (password !== confirmpassword) newErrors.confirmpassword = "Passwords do not match.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email format.";
+    }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+        if (!password) {
+          newErrors.password = "Password is required.";
+        } else if (!passwordRegex.test(password)) {
+          newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
+        }
+        if (!confirmpassword) {
+          newErrors.confirmpassword = "Confirm Password is required.";
+        } else if (password !== confirmpassword) {
+          newErrors.confirmpassword = "Passwords do not match.";
+        }
+    
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+      };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,25 +77,28 @@ const Register: React.FC = () => {
   };
 
  
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!validateInputs()) return;
-  setLoading(true);
-  try {
-    const response = await API.post("auth/register", userData);
-    if (response.success) {
-      setIsSuccess(true);
-      setUserData({ type: "", name: "", email: "", password: "", confirmpassword: "" });
-    } else if (response.error?.code === "ERR_EMAIL_ALREADY_EXIST") {
-      setErrors((prev) => ({ ...prev, email: "This email is already registered. Please use a different email." }));
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateInputs()) return;
+    setLoading(true);
+    try {
+      const response = await API.post("auth/register", userData);
+      if (response.success) {
+        setIsSuccess(true);
+        showToast("success", "Registration successful! Please check your email for a verification link.");
+        setUserData({ type: "", name: "", email: "", password: "", confirmpassword: "" });
+      } else if (response.error?.code === "ERR_EMAIL_ALREADY_EXIST") {
+        setErrors((prev) => ({ ...prev, email: "This email is already registered. Please use a different email." }));
+        showToast("error", "This email is already registered. Please use a different email.");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setErrors((prev) => ({ ...prev, general: "An unexpected error occurred. Please try again later." }));
+      showToast("error", "An unexpected error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error during registration:", error);
-    setErrors((prev) => ({ ...prev, general: "An unexpected error occurred. Please try again later." }));
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
   const renderInputField = (

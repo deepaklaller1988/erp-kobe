@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../utils/API";
 import { useLocation, useNavigate } from "react-router-dom";
 import MiniLoader from "../components/MiniLoader";
+import { toast } from "react-toastify";
 
 const Invite = () => {
   const router = useNavigate();
@@ -11,6 +12,17 @@ const Invite = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProcessed, setIsProcessed] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const showToast = (type: "success" | "error" | "warn", message: string) => {
+    toast[type](message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
 
 
   const getQueryParam = (name: string) => {
@@ -31,14 +43,17 @@ const Invite = () => {
         const response = await API.get(
           `seller-shipper/invitation?token=${checkToken}`
         );
-
+        
         if (
           response.error &&
           response.error.code === "ERR_INVITATION_ALREADY_ACCEPTED"
+          
         ) {
           setEmailError("This invitation has already been accepted.");
+          showToast("warn","This invitation has already been accepted.")
         } else {
           console.log("Invitation accepted successfully:", response);
+          showToast("success","Invitation accepted successfully.")
         }
       } catch (error) {
         console.error("Error fetching invitation:", error);
@@ -81,13 +96,16 @@ const Invite = () => {
         const response = await API.post("seller-shipper/invitation", {
           shipperEmail: shipperEmail,
         });
+        showToast("success","Email sent to shipper successfully")
         console.log("Response:", response);
         if (!response.success) {
           setEmailError("No shipper found with this email address.");
+          showToast("error","No shipper found with this email address.")
         }
       } catch (error) {
         console.error("Error sending invite:", error);
         setEmailError("An error occurred while sending the invitation.");
+        showToast("error","An error occurred while sending the invitation.")
       }finally{
         setLoading(false);
       }
@@ -99,7 +117,7 @@ const Invite = () => {
   };
 
   return (
-    <div className="py-5 gap-2 flex flex-col items-start flex items-center justify-center h-full mt-10 w-full">
+    <div className="py-5 gap-2 flex-col flex items-center justify-center h-full mt-10 w-full">
       {checkToken ? (
         isLoading ? (
           <div className="pt-20">

@@ -19,6 +19,18 @@ const Login: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const showToast = (type: "success" | "error" | "warn", message: string) => {
+    toast[type](message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
+
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setEmailError(null);
@@ -27,23 +39,13 @@ const Login: React.FC = () => {
 
     try {
       const response = await API.post("auth/login", userData);
-      
-      if (response.success === true) {
+
+      if (response.success) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("type", type);
-        toast.success("Login successful!", {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      
-        router(response.data.type === "seller" ? "/seller" : "/shipper");
+        showToast("success", "Login successful!");
+        router(type === "seller" ? "/seller" : "/shipper");
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");
@@ -52,31 +54,12 @@ const Login: React.FC = () => {
         } else {
           setEmailError("Invalid email");
         }
-
-        toast.error("Login failed. Please check your credentials.", {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        showToast("error", "Login failed. Please check your credentials.");
       }
     } catch (err: any) {
       console.error("Request Error:", err);
       setEmailError("An error occurred, please try again.");
-      toast.error("An unexpected error occurred. Please try again.", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      showToast("warn", "An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
