@@ -43,9 +43,7 @@ const Invite = () => {
       if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
         showToast("error", "This invitation has already been accepted.");
         setEmailError("This invitation has already been accepted.");
-      } else {
-        showToast("success", "Invitation accepted successfully.");
-      }
+      } 
     } catch (error) {
       console.error("Error fetching invitation:", error);
       setEmailError("An error occurred while accepting the invitation.");
@@ -83,8 +81,7 @@ const Invite = () => {
         const response = await API.post("seller-shipper/invitation", {
           shipperEmail: shipperEmail,
         });
-        console.log("Response:", response);
-        if (!response.success) {
+         if (!response.success) {
           setEmailError("No shipper found with this email address.");
           showToast("error", "No shipper found with this email address.");
         } else {
@@ -137,7 +134,7 @@ const Invite = () => {
           <h1 className="text-xl mb-2 text-blue-800 font-semibold text-center">Enter Shipper Email ID to invite</h1>
           <form
             onSubmit={formSubmit}
-            className="flex flex-col items-center justify-center w-full w-[300px]"
+            className="flex flex-col items-center justify-center w-[300px]"
           >
             <div className="w-full">
               <input
@@ -153,11 +150,11 @@ const Invite = () => {
               )}
             </div>
             {loading ? (
-              <MiniLoader />
+              <div className="mt-4"><MiniLoader /></div>
             ) : (
               <button
                 type="submit"
-                className="rounded-md p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-2 w-full"
+                className="rounded-full p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-5 w-full"
               >
                 Send
               </button>

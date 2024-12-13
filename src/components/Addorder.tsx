@@ -120,7 +120,6 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
           }
         );
         let result = await response.json();
-        console.log(result, response, "-0-0-0-0-0-0");
         setUserData({ ...userData, label: result.data.url });
       } catch (error) {
         console.error("Error uploading file:", error);

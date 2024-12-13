@@ -5,6 +5,7 @@ import API from "../utils/API";
 import MiniLoader from "../components/MiniLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -177,6 +178,15 @@ const Register: React.FC = () => {
             {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
           </form>
         )}
+        <div className="mt-5 flex gap-2 text-black">
+              <span>Already have an account ?</span>
+              <Link
+                to="/auth/login"
+                className="text-black hover:text-black/80 duration-300"
+              >
+                Sign in
+              </Link>
+            </div>
       </div>
     </div>
   );

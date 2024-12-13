@@ -58,7 +58,6 @@ const Login: React.FC = () => {
       }
     } catch (err: any) {
       console.error("Request Error:", err);
-      console.log("asdasd");
       setEmailError("An error occurred, please try again.");
       showToast("warn", "An unexpected error occurred. Please try again.");
     } finally {

@@ -16,7 +16,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
 
   const postProduct = async () => {
     try {
-      console.log(select, "[]][[]");
+ 
       if (select === "" || select === undefined || select === null) {
         setError("Please select status");
       } else {
@@ -27,7 +27,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
         const response = await API.post("order/update-status", data);
         onSuccess();
         onClose();
-        console.log("Product added successfully:", response);
+    
       }
     } catch (error) {
       console.error("Error during product submission:", error);

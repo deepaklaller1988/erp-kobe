@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "../utils/API";
 import { useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Password = () => {
   const location = useLocation();
@@ -15,12 +16,23 @@ const Password = () => {
     password: "",
     confirmPassword: "",
   });
+  const showToast = (type: "success" | "error" | "warn", message: string) => {
+    toast[type](message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
   const getQueryParam = (name: string) => {
     const urlParams = new URLSearchParams(location.search);
     return urlParams.get(name);
   };
   const token = getQueryParam("token");
-  console.log("password token:", token)
+  
 
   const handleSubmitNewPassword = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -57,8 +69,12 @@ const Password = () => {
       });
       if (response.status === 200) {
         setSuccess("Password updated successfully!");
+        showToast("success","Password updated successfully")
+
       } else {
         setError("Failed to update password. Please try again.");
+        showToast("error", "Failed to update password. Please try again");
+
       }
     } catch (err: any) {
       console.error(err);

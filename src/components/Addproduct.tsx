@@ -34,7 +34,6 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
             const response = await API.post("product", data);
             showToast("success", "Product added successfully");
             onSuccess();
-            console.log("Product added successfully:", response);
         } catch (error) {
             console.error("Error during product submission:", error);
             showToast("error", "An error occurred while adding product");
