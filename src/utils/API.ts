@@ -74,7 +74,7 @@ class API {
           resent,
           path
         );
-          resolve(parsed);
+        resolve(parsed);
       } catch (error: any) {
         reject(error);
       }
@@ -91,12 +91,14 @@ class API {
       // Join path array
       if (Array.isArray(path)) path = path.join("/");
 
+
+
       let headers = new Headers();
 
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("accessToken")) {
         headers.append(
           "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
+          `Bearer ${localStorage.getItem("accessToken")}`
         );
       }
 
@@ -227,19 +229,19 @@ class API {
     path: string | string[]
   ): Promise<Res> {
     // try {
-      let res: Res = await raw.json();
-      res.success = raw.status >= 200 && raw.status < 300;
-      res.status = raw.status;
-      res.resend = resend;
-      res.resent = resent;
-      // console.log("res",res)
-      return res;
+    let res: Res = await raw.json();
+    res.success = raw.status >= 200 && raw.status < 300;
+    res.status = raw.status;
+    res.resend = resend;
+    res.resent = resent;
+    // console.log("res",res)
+    return res;
 
-    } catch (error:any) {
-      console.error("Error parsing response:", error);
+  } catch(error: any) {
+    console.error("Error parsing response:", error);
     //   throw error;
 
-    }
   }
+}
 
 export default API;

@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Header } from "./components/Header";
 import { Suspense, useEffect, useState } from "react";
 import MiniLoader from "./components/MiniLoader";
@@ -21,7 +27,7 @@ const Layout = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
-    console.log("storedToken",storedToken)
+    console.log("storedToken", storedToken);
     setToken(storedToken);
     setLoading(false);
   }, []); 
@@ -29,8 +35,8 @@ const Layout = () => {
   useEffect(() => {
     if (loading) return;
 
-    const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
-    const isAuthRoute = authRoutes.includes(location.pathname);
+  //   const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
+  //   const isAuthRoute = authRoutes.includes(location.pathname);
 
     if (!token) {
       navigate("/auth/login");
