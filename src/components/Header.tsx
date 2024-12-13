@@ -1,31 +1,37 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { useEffect, useState } from "react";
+import { userDetailsAttributes } from "../types/UserTypes";
 
 export const Header = () => {
   const router = useNavigate();
-  const [type, setType] = useState<string>();
+  const [userDetails, setUserDetails] = useState<userDetailsAttributes>();
 
   useEffect(() => {
-    let type = localStorage.getItem("type");
-    setType(type ? type : "");
+    let checkUserDetails: any = localStorage.getItem("userDetails");
+    let data = JSON.parse(checkUserDetails);
+    setUserDetails(data);
   }, []);
 
   const handleLogout = async () => {
     await API.get(`auth/logout`);
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("type");
+    localStorage.removeItem("userDetails");
     router("auth/login");
   };
 
   const gotoDashboard = () => {
-    if (type === "seller") {
+    if (userDetails?.type === "seller") {
       router("/seller");
-    } else if (type === "shipper") {
+    } else if (userDetails?.type === "shipper") {
       router("/shipper");
     } else {
       window.alert("Not logged in");
     }
+  };
+
+  const capitalizeWords = (word: any) => {
+    return !word ? "" : word.charAt(0).toUpperCase() + word.substring(1);
   };
 
   return (
@@ -33,7 +39,10 @@ export const Header = () => {
       <div className="flex flex-col h-full justify-between">
         <div className="header-inner flex justify-between items-center">
           <div className="header-icon">
-            <h1 className=" text-white font-bold text-2xl">ERP</h1>
+            <h1 className=" text-white font-bold text-2xl">
+              ERP ({capitalizeWords(userDetails?.type)} dashboard)
+            </h1>
+            <p className="mt-1 text-gray-200">Welcome, {userDetails?.name}</p>
           </div>
           <div className="menu-list">
             <ul className="flex gap-3 items-center">
@@ -45,7 +54,7 @@ export const Header = () => {
                   Dashboard
                 </button>
               </li>
-              {type === "seller" && (
+              {userDetails?.type === "seller" && (
                 <li>
                   <NavLink
                     to="/invite-shipper"

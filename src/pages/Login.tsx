@@ -43,7 +43,7 @@ const Login: React.FC = () => {
       if (response.success) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("type", type);
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
         showToast("success", "Login successful!");
         router(type === "seller" ? "/seller" : "/shipper");
       } else {

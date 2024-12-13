@@ -100,7 +100,7 @@ const Seller = () => {
             </div>
           ) : (
             <div className="w-full p-5 flex flex-col gap-2 h-full">
-              <div className="flex flex-row justify-around">
+              <div className="flex flex-row justify-around mx-14">
                 <h3>PRODUCT</h3>
                 <h3>TOTAL QUANTITY</h3>
                 <h3>AVAILABLE QUANTITY</h3>
