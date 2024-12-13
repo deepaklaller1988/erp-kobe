@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
 import MiniLoader from "./MiniLoader";
+import { toast } from "react-toastify";
 
 interface PollModalProps {
   onClose: () => void;
@@ -14,7 +15,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     productId: "",
     note: "",
     usedQuantity: "",
-    label: "", // We'll store the label file name here
+    label: "",
   });
   const [productError, setProductError] = useState<string | null>(null);
   const [labelError, setLabelError] = useState<string | null>(null);
@@ -23,6 +24,17 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
   const [productIdData, setproductIdData] = useState<any[]>([]);
   const [productDetails, setProductDetails] = useState<any>({});
   const [loading, setLoading] = useState(false);
+  const showToast = (type: "success" | "error" | "warn", message: string) => {
+    toast[type](message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,9 +56,11 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
   }) => {
     try {
       const response = await API.post("order", data);
+      showToast("success","Order added successfully")
       onSuccess();
     } catch (error) {
       console.error("Error during product submission:", error);
+      showToast("error","An error occurred while adding order")
     }
   };
 
