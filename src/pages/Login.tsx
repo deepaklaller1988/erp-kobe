@@ -27,11 +27,11 @@ const Login: React.FC = () => {
 
     try {
       const response = await API.post("auth/login", userData);
+      
       if (response.success === true) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("type", type);
-
         toast.success("Login successful!", {
           position: "bottom-right",
           autoClose: 3000,
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
           progress: undefined,
           theme: "colored",
         });
-
+      
         router(response.data.type === "seller" ? "/seller" : "/shipper");
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {

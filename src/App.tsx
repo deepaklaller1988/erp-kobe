@@ -22,30 +22,20 @@ const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
-    console.log("storedToken", storedToken);
-    setToken(storedToken);
-    setLoading(false);
-  }, []); 
-
-  useEffect(() => {
-    if (loading) return;
 
     const authRoutes = [ "/auth/register", "/auth/forgotpassword", "/auth/verification"];
     const isAuthRoute = authRoutes.includes(location.pathname);
 
-    if (!token && !isAuthRoute) {
+    if (!storedToken && !isAuthRoute) {
       navigate("/auth/login");
     }
 
-    // if (token && isAuthRoute) {
-    //   navigate("/", { replace: true });
-    // }
-  }, [token, loading, location.pathname, navigate]);
+    if (storedToken && isAuthRoute) {
+      navigate(-1);
+    }
+  }, [ location.pathname, navigate]);
 
   const isAuthRoute = [
     "/auth/login",
