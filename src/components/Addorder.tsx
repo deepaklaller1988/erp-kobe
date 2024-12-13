@@ -55,11 +55,14 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     label: string;
   }) => {
     try {
+      setLoading(true)
       const response = await API.post("order", data);
       showToast("success","Order added successfully")
       onSuccess();
+      setLoading(false)
     } catch (error) {
       console.error("Error during product submission:", error);
+      setLoading(false)
       showToast("error","An error occurred while adding order")
     }
   };
@@ -78,7 +81,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
       const usedQuantityValue = parseInt(value, 10);
       const availableQuantityValue = productDetails?.availableQuantity;
 
-      if (usedQuantityValue >= availableQuantityValue) {
+      if (usedQuantityValue > availableQuantityValue) {
         setQuantityError(
           "Quantity cannot be more than the available quantity."
         );
@@ -272,7 +275,9 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         {/* Submit Button */}
         <div className="text-center">
           {loading ? (
+            <div className="mt-4">
             <MiniLoader />
+            </div>
           ) : (
             <button
               onClick={handleSubmit}

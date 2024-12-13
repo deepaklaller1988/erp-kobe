@@ -31,39 +31,30 @@ const Invite = () => {
   };
 
   const checkToken = getQueryParam("token");
-
-  useEffect(() => {
-    const handleAcceptInvitation = async () => {
-      if (!checkToken || isProcessed) return;
-
+  
+  const handleAcceptInvitation = async () => {
+    if (isProcessed) return;
+    setIsProcessed(true);
+  
+    try {
       setIsLoading(true);
-      setIsProcessed(true);
-
-      try {
-        const response = await API.get(
-          `seller-shipper/invitation?token=${checkToken}`);
-        if (
-          response.error &&
-          response.error.code === "ERR_INVITATION_ALREADY_ACCEPTED" ) {
-          setEmailError("This invitation has already been accepted.");
-          showToast("warn","This invitation has already been accepted.")
-        } else {
-          console.log("Invitation accepted successfully:", response);
-          showToast("success","Invitation accepted successfully.")
-        }
-      } catch (error) {
-        console.error("Error fetching invitation:", error);
-        setEmailError("An error occurred while accepting the invitation.");
-      } finally {
-        setIsLoading(false);
+      const response = await API.get(`seller-shipper/invitation?token=${checkToken}`);
+      if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
+        showToast("error", "This invitation has already been accepted.");
+        setEmailError("This invitation has already been accepted.");
+        
+      } else {
+        showToast("success", "Invitation accepted successfully.");
       }
-    };
-
-    if (checkToken) {
-      handleAcceptInvitation();
+    } catch (error) {
+      console.error("Error fetching invitation:", error);
+      setEmailError("An error occurred while accepting the invitation.");
+      showToast("error", "An error occurred while accepting the invitation.");
     }
-  }, [checkToken]);
-
+    setIsLoading(false);
+  };
+  handleAcceptInvitation();
+  
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(e.target.value);
     if (emailError) {
@@ -92,11 +83,13 @@ const Invite = () => {
         const response = await API.post("seller-shipper/invitation", {
           shipperEmail: shipperEmail,
         });
-        showToast("success","Email sent to shipper successfully")
         console.log("Response:", response);
         if (!response.success) {
           setEmailError("No shipper found with this email address.");
           showToast("error","No shipper found with this email address.")
+        }else{
+          setEmailError("");
+          showToast("success","Email sent to shipper successfully")
         }
       } catch (error) {
         console.error("Error sending invite:", error);

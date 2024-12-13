@@ -106,7 +106,8 @@ const Seller = () => {
                 <h3>AVAILABLE QUANTITY</h3>
                 <h3>DATE OF CREATION</h3>
               </div>
-              {apiProductData?.map((item, itemIndex) => (
+              {apiProductData && apiProductData.length > 0 ?
+              apiProductData?.map((item, itemIndex) => (
                 <div key={itemIndex}>
                   <div
                     className={`full ${
@@ -196,7 +197,10 @@ const Seller = () => {
                     </section>
                   </div>
                 </div>
-              ))}
+              ))
+            :
+            <p className="text-gray-500 text-center mt-1">No products found </p>
+            }
             </div>
           )}
         </div>

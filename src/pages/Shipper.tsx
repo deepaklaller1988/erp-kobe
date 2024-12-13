@@ -13,6 +13,7 @@ import StatusPop from "../components/StatusPop";
 const Shipper = () => {
   useTitle({ title: "Shipper Dashboard" });
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
   const [openAccordionIndex, setOpenAccordionIndex] = useState<any>();
   const [shipperData, setShipperData] = useState<any>([]);
   const [ordersOfSingleSeller, setOrdersOfSingleSeller] = useState<
@@ -39,12 +40,12 @@ const Shipper = () => {
   };
 
   const getAllOrdersOfaSeller = async () => {
-    setLoading(true);
+    setLoading1(true);
     const response = await API.get(
       `seller-shipper/get-orders?sellerId=${shipperData[openAccordionIndex].sellerId}&page=1&limit=10`
     );
     setOrdersOfSingleSeller(response.data.rows);
-    setLoading(false);
+    setLoading1(false);
   };
 
   const handleAccordionClick = (index: any) => {
@@ -73,19 +74,19 @@ const Shipper = () => {
       name: "Product",
       selector: (row) => row.products[0].name,
       sortable: true,
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Used Quantity",
       selector: (row) => row.usedQuantity,
       sortable: true,
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Label",
       selector: (row) => row.label,
       sortable: true,
-      width: "20%",
+      width: "15%",
       cell: (row) => (
         <button
           className="px-8 py-3 rounded-xl border bg-blue-400 text-white"
@@ -99,19 +100,19 @@ const Shipper = () => {
       name: "Status",
       selector: (row) => row.status,
       sortable: true,
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Created At",
-      selector: (row) => row.createdAt,
+      selector: (row) => row.createdAt?.substring(0, 10),
       sortable: true,
-      width: "20%",
+      width: "15%",
     },
     {
       name: "Change status",
       selector: (row) => row.orderId,
       sortable: true,
-      width: "20%",
+      width: "15%",
       cell: (row) => (
         <button
           className="px-3 py-3 rounded-xl border bg-black text-white flex flex-row gap-2 items-center justify-center"
@@ -137,7 +138,9 @@ const Shipper = () => {
       )}
       <div className="w-3/4">
         {loading ? (
+          <div className="flex">
           <MiniLoader />
+          </div>
         ) : (
           <div className="w-full p-5 flex flex-col gap-2 h-full">
             <div className="flex flex-row justify-start">
@@ -184,9 +187,11 @@ const Shipper = () => {
                           : "max-h-0"
                       } border-gray-300 px-2 overflow-hidden accordion duration-300`}
                     >
-                      <div className="w-3/4">
-                        {loading ? (
+                      <div className="w-full">
+                        {loading1 ? (
+                          <div className="flex mt-4">
                           <MiniLoader />
+                          </div>
                         ) : (
                           <DataTable
                             data={ordersOfSingleSeller}

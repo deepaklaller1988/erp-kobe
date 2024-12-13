@@ -151,7 +151,7 @@ const Register: React.FC = () => {
                   key={item.role}
                   type="button"
                   className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 text-gray-300 ${
-                    userData.type === item.role ? "border-blue-600 text-blue-600" : "hover:bg-gray-100"
+                    userData.type === item.role ? "border-blue-600  !text-blue-600" : "hover:bg-gray-100"
                   }`}
                   onClick={() => handleRoleSelection(item.role)}
                 >
