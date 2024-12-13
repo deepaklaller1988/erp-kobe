@@ -4,7 +4,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MiniLoader from "../components/MiniLoader";
-// import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login: React.FC = () => {
   useTitle({ title: "Login" });
@@ -17,7 +18,6 @@ const Login: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const notify = () => toast("Successfully Login");
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -30,11 +30,20 @@ const Login: React.FC = () => {
       if (response.success === true) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
-
         localStorage.setItem("type", type);
+
+        toast.success("Login successful!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
         router(response.data.type === "seller" ? "/seller" : "/shipper");
-        // notify();
-        // <ToastContainer />
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");
@@ -43,10 +52,31 @@ const Login: React.FC = () => {
         } else {
           setEmailError("Invalid email");
         }
+
+        toast.error("Login failed. Please check your credentials.", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (err: any) {
       console.error("Request Error:", err);
       setEmailError("An error occurred, please try again.");
+      toast.error("An unexpected error occurred. Please try again.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     } finally {
       setLoading(false);
     }
@@ -72,12 +102,11 @@ const Login: React.FC = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
-            <h1 className="text-black font-bold text-5xl text-center">
-              Sign in
-            </h1>
+            <h1 className="text-black font-bold text-5xl text-center">Sign in</h1>
             <p className="mt-10 mb-1 text-black">Email</p>
             <input
               className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"

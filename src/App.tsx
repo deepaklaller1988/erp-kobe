@@ -35,10 +35,10 @@ const Layout = () => {
   useEffect(() => {
     if (loading) return;
 
-  //   const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
-  //   const isAuthRoute = authRoutes.includes(location.pathname);
+    const authRoutes = [ "/auth/register", "/auth/forgotpassword", "/auth/verification"];
+    const isAuthRoute = authRoutes.includes(location.pathname);
 
-    if (!token) {
+    if (!token && !isAuthRoute) {
       navigate("/auth/login");
     }
 
