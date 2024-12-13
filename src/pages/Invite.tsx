@@ -24,25 +24,25 @@ const Invite = () => {
     });
   };
 
-
   const getQueryParam = (name: string) => {
     const urlParams = new URLSearchParams(location.search);
     return urlParams.get(name);
   };
 
   const checkToken = getQueryParam("token");
-  
+
   const handleAcceptInvitation = async () => {
     if (isProcessed) return;
     setIsProcessed(true);
-  
+
     try {
       setIsLoading(true);
-      const response = await API.get(`seller-shipper/invitation?token=${checkToken}`);
+      const response = await API.get(
+        `seller-shipper/invitation?token=${checkToken}`
+      );
       if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
         showToast("error", "This invitation has already been accepted.");
         setEmailError("This invitation has already been accepted.");
-        
       } else {
         showToast("success", "Invitation accepted successfully.");
       }
@@ -54,7 +54,7 @@ const Invite = () => {
     setIsLoading(false);
   };
   handleAcceptInvitation();
-  
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(e.target.value);
     if (emailError) {
@@ -86,16 +86,16 @@ const Invite = () => {
         console.log("Response:", response);
         if (!response.success) {
           setEmailError("No shipper found with this email address.");
-          showToast("error","No shipper found with this email address.")
-        }else{
+          showToast("error", "No shipper found with this email address.");
+        } else {
           setEmailError("");
-          showToast("success","Email sent to shipper successfully")
+          showToast("success", "Email sent to shipper successfully");
         }
       } catch (error) {
         console.error("Error sending invite:", error);
         setEmailError("An error occurred while sending the invitation.");
-        showToast("error","An error occurred while sending the invitation.")
-      }finally{
+        showToast("error", "An error occurred while sending the invitation.");
+      } finally {
         setLoading(false);
       }
     }
@@ -152,13 +152,16 @@ const Invite = () => {
                 <p className="text-red-500 text-sm">{emailError}</p>
               )}
             </div>
-            {loading ? <MiniLoader/> :  <button
-              type="submit"
-              className="rounded-md p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-2 w-full"
-            >
-              Send
-            </button>}
-           
+            {loading ? (
+              <MiniLoader />
+            ) : (
+              <button
+                type="submit"
+                className="rounded-md p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-2 w-full"
+              >
+                Send
+              </button>
+            )}
           </form>
         </>
       )}
