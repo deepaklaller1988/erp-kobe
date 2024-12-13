@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import API from "../utils/API";
 import { TableColumn } from "react-data-table-component";
 import { ShipperOrderData } from "../types/DataTableAttributes";
+import { CgArrowsExchange } from "react-icons/cg";
+import Select from "react-select";
+import StatusPop from "../components/StatusPop";
 
 const Shipper = () => {
   useTitle({ title: "Shipper Dashboard" });
@@ -15,6 +18,8 @@ const Shipper = () => {
   const [ordersOfSingleSeller, setOrdersOfSingleSeller] = useState<
     ShipperOrderData[]
   >([]);
+  const [statusPop, setStatusPop] = useState<boolean>(false);
+  const [orderId, setOrderId] = useState<string>("");
 
   useEffect(() => {
     getAllAssociatedSellers();
@@ -50,6 +55,19 @@ const Shipper = () => {
     }
   };
 
+  const handleView = (url: string) => {
+    if (url) {
+      window.open(`${process.env.REACT_APP_API_URL}${url}`, "_blank");
+    } else {
+      alert("No file uploaded");
+    }
+  };
+
+  const openStatusPopup = (open: boolean, orderId: string) => {
+    setOrderId(orderId);
+    setStatusPop(true);
+  };
+
   const orderColumns: TableColumn<ShipperOrderData>[] = [
     {
       name: "Product",
@@ -69,7 +87,10 @@ const Shipper = () => {
       sortable: true,
       width: "20%",
       cell: (row) => (
-        <button className="px-8 py-3 rounded-xl border bg-blue-400 text-white">
+        <button
+          className="px-8 py-3 rounded-xl border bg-blue-400 text-white"
+          onClickCapture={() => handleView(row.label)}
+        >
           View
         </button>
       ),
@@ -86,10 +107,34 @@ const Shipper = () => {
       sortable: true,
       width: "20%",
     },
+    {
+      name: "Change status",
+      selector: (row) => row.orderId,
+      sortable: true,
+      width: "20%",
+      cell: (row) => (
+        <button
+          className="px-3 py-3 rounded-xl border bg-black text-white flex flex-row gap-2 items-center justify-center"
+          onClickCapture={() => openStatusPopup(true, row.orderId)}
+        >
+          Select status
+          <p className="text-xl">
+            <CgArrowsExchange />
+          </p>
+        </button>
+      ),
+    },
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen py-5">
+    <div className="flex flex-col justify-center items-center w-full h-full py-5">
+      {statusPop && (
+        <StatusPop
+          onClose={() => setStatusPop(false)}
+          onSuccess={getAllOrdersOfaSeller}
+          orderId={orderId}
+        />
+      )}
       <div className="w-3/4">
         {loading ? (
           <MiniLoader />

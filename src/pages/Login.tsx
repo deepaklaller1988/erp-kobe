@@ -42,7 +42,8 @@ const Login: React.FC = () => {
       if (response.success) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("type", type);
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+
         router(type === "seller" ? "/seller" : "/shipper");
         showToast("success","Login Successfully")
       } else {
@@ -57,6 +58,7 @@ const Login: React.FC = () => {
       }
     } catch (err: any) {
       console.error("Request Error:", err);
+      console.log("asdasd");
       setEmailError("An error occurred, please try again.");
       showToast("warn", "An unexpected error occurred. Please try again.");
     } finally {
@@ -87,7 +89,9 @@ const Login: React.FC = () => {
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
-            <h1 className="text-black font-bold text-5xl text-center">Sign in</h1>
+            <h1 className="text-black font-bold text-5xl text-center">
+              Sign in
+            </h1>
             <p className="mt-10 mb-1 text-black">Email</p>
             <input
               className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"

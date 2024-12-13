@@ -16,6 +16,7 @@ export interface SellerProductAttributes {
 
 //shipper
 export interface ShipperOrderData {
+    orderId: string;
     productId: string;
     name: string;
     usedQuantity: string;

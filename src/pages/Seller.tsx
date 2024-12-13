@@ -95,10 +95,12 @@ const Seller = () => {
         </div>
         <div className="w-3/4">
           {loading && openAccordionIndex === null ? (
-            <MiniLoader />
+            <div className="w-full flex items-center justify-center">
+              <MiniLoader />
+            </div>
           ) : (
             <div className="w-full p-5 flex flex-col gap-2 h-full">
-              <div className="flex flex-row justify-around">
+              <div className="flex flex-row justify-around mx-14">
                 <h3>PRODUCT</h3>
                 <h3>TOTAL QUANTITY</h3>
                 <h3>AVAILABLE QUANTITY</h3>
@@ -147,7 +149,9 @@ const Seller = () => {
                     >
                       <div className="w-full">
                         {loading && openAccordionIndex === itemIndex ? (
-                          <MiniLoader />
+                          <div className="flex my-5">
+                            <MiniLoader />
+                          </div>
                         ) : (
                           <DataTable
                             data={ordersOfSingleProduct}

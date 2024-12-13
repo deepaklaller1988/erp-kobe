@@ -245,6 +245,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
           className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
           type="file"
           name="pdf"
+          accept="application/pdf"
           onChange={handleFileChange}
         />
         <p className="text-red-500">{labelError}</p>
