@@ -41,14 +41,10 @@ const Invite = () => {
 
       try {
         const response = await API.get(
-          `seller-shipper/invitation?token=${checkToken}`
-        );
-        
+          `seller-shipper/invitation?token=${checkToken}`);
         if (
           response.error &&
-          response.error.code === "ERR_INVITATION_ALREADY_ACCEPTED"
-          
-        ) {
+          response.error.code === "ERR_INVITATION_ALREADY_ACCEPTED" ) {
           setEmailError("This invitation has already been accepted.");
           showToast("warn","This invitation has already been accepted.")
         } else {

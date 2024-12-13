@@ -39,13 +39,12 @@ const Login: React.FC = () => {
 
     try {
       const response = await API.post("auth/login", userData);
-
       if (response.success) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("type", type);
-        showToast("success", "Login successful!");
         router(type === "seller" ? "/seller" : "/shipper");
+        showToast("success","Login Successfully")
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");
@@ -85,7 +84,6 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
