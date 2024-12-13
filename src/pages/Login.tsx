@@ -122,7 +122,7 @@ const Login: React.FC = () => {
             <p className="text-red-500">{passwordError}</p>
 
             <div className="flex justify-end pt-2">
-              <NavLink className="text-blue-800" to="/auth/forgotpassword">
+              <NavLink className="text-blue-800" to="/auth/forgot-password">
                 Forgot Password
               </NavLink>
             </div>

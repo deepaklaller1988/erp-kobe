@@ -6,8 +6,10 @@ import MiniLoader from "../components/MiniLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
+import useTitle from "../hooks/useTitle";
 
 const Register: React.FC = () => {
+  useTitle({ title: "Register" });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,21 +57,21 @@ const Register: React.FC = () => {
       newErrors.email = "Invalid email format.";
     }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-        if (!password) {
-          newErrors.password = "Password is required.";
-        } else if (!passwordRegex.test(password)) {
-          newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
-        }
-        if (!confirmpassword) {
-          newErrors.confirmpassword = "Confirm Password is required.";
-        } else if (password !== confirmpassword) {
-          newErrors.confirmpassword = "Passwords do not match.";
-        }
-    
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-      };
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    if (!password) {
+      newErrors.password = "Password is required.";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
+    }
+    if (!confirmpassword) {
+      newErrors.confirmpassword = "Confirm Password is required.";
+    } else if (password !== confirmpassword) {
+      newErrors.confirmpassword = "Passwords do not match.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,7 +79,7 @@ const Register: React.FC = () => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
- 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateInputs()) return;
@@ -115,7 +117,7 @@ const Register: React.FC = () => {
       <div className="relative">
         <input
           className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
-          type={showToggleIcon && toggleVisibility ? (type === "password" ? "text" : "password") : type}
+          type={showToggleIcon && toggleVisibility ? (type === "password" ? "password" : "text") : type}
           name={name}
           value={value}
           onChange={handleChange}
@@ -125,7 +127,7 @@ const Register: React.FC = () => {
             onClick={toggleVisibility}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
           >
-            {type === "password" ? <FaEyeSlash />: <FaEye /> }
+            {type === "password" ? <FaEyeSlash /> : <FaEye />}
           </span>
         )}
       </div>
@@ -147,13 +149,12 @@ const Register: React.FC = () => {
             <p className="mt-10 mb-1 text-black">Choose Your Role</p>
             <div className="flex justify-center gap-5">
               {[{ role: "seller", icon: <FaBalanceScale size={35} />, label: "Seller" },
-                { role: "shipper", icon: <MdDeliveryDining size={35} />, label: "Shipper" }].map((item) => (
+              { role: "shipper", icon: <MdDeliveryDining size={35} />, label: "Shipper" }].map((item) => (
                 <button
                   key={item.role}
                   type="button"
-                  className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 text-gray-300 ${
-                    userData.type === item.role ? "border-blue-800  !text-blue-800" : "hover:bg-gray-100"
-                  }`}
+                  className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 text-gray-300 ${userData.type === item.role ? "border-blue-800  !text-blue-800" : "hover:bg-gray-100"
+                    }`}
                   onClick={() => handleRoleSelection(item.role)}
                 >
                   {item.icon}
@@ -173,20 +174,20 @@ const Register: React.FC = () => {
               disabled={loading}
               className="rounded-full p-3 w-full bg-black text-white mt-8 hover:bg-black/80 transition duration-300"
             >
-              {loading ? <MiniLoader/> : "Sign up"}
+              {loading ? <MiniLoader /> : "Sign up"}
             </button>
             {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
           </form>
         )}
         <div className="mt-5 flex gap-2 text-black">
-              <span>Already have an account ?</span>
-              <Link
-                to="/auth/login"
-                className="text-black hover:text-black/80 duration-300"
-              >
-                Sign in
-              </Link>
-            </div>
+          <span>Already have an account ?</span>
+          <Link
+            to="/auth/login"
+            className="text-black hover:text-black/80 duration-300"
+          >
+            Sign in
+          </Link>
+        </div>
       </div>
     </div>
   );

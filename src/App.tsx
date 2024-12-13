@@ -26,7 +26,7 @@ const Layout = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
 
-    const authRoutes = [ "/auth/register", "/auth/forgotpassword", "/auth/verification"];
+    const authRoutes = [ "/auth/register", "/auth/forgot-password", "/auth/verification"];
     const isAuthRoute = authRoutes.includes(location.pathname);
 
     if (!storedToken && !isAuthRoute) {
@@ -40,7 +40,7 @@ const Layout = () => {
 
   const isAuthRoute = [
     "/auth/login",
-    "/auth/forgotpassword",
+    "/auth/forgot-password",
     "/auth/register",
     "/auth/verification",
   ].includes(location.pathname);
@@ -58,7 +58,7 @@ const Layout = () => {
             <Route path="/invitation/shipper" element={<Invite />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/verification" element={<Verification />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

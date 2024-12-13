@@ -32,24 +32,28 @@ const Invite = () => {
   const checkToken = getQueryParam("token");
 
   const handleAcceptInvitation = async () => {
-    if (isProcessed) return;
-    setIsProcessed(true);
+    if (checkToken) {
 
-    try {
-      setIsLoading(true);
-      const response = await API.get(
-        `seller-shipper/invitation?token=${checkToken}`
-      );
-      if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
-        showToast("error", "This invitation has already been accepted.");
-        setEmailError("This invitation has already been accepted.");
-      } 
-    } catch (error) {
-      console.error("Error fetching invitation:", error);
-      setEmailError("An error occurred while accepting the invitation.");
-      showToast("error", "An error occurred while accepting the invitation.");
+
+      if (isProcessed) return;
+      setIsProcessed(true);
+
+      try {
+        setIsLoading(true);
+        const response = await API.get(
+          `seller-shipper/invitation?token=${checkToken}`
+        );
+        if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
+          showToast("error", "This invitation has already been accepted.");
+          setEmailError("This invitation has already been accepted.");
+        }
+      } catch (error) {
+        console.error("Error fetching invitation:", error);
+        setEmailError("An error occurred while accepting the invitation.");
+        showToast("error", "An error occurred while accepting the invitation.");
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   handleAcceptInvitation();
 
@@ -81,9 +85,21 @@ const Invite = () => {
         const response = await API.post("seller-shipper/invitation", {
           shipperEmail: shipperEmail,
         });
-         if (!response.success) {
-          setEmailError("No shipper found with this email address.");
-          showToast("error", "No shipper found with this email address.");
+        if (!response.success) {
+          if (response.error?.code === "ERR_SHIPPER_NOT_FOUND") {
+            setEmailError("No shipper found with this email address.");
+            showToast("error", "No shipper found with this email address.");
+          } else if (response.error?.code === "ERR_SHIPPER_ALREADY_INVITED") {
+            setEmailError("This shipper was already invited");
+            showToast("error", "This shipper was already invited");
+          } else if (response.error?.code === "ERR_SHIPPER_NOT_VERIFIED") {
+            setEmailError("No shipper found with this email address.");
+            showToast("error", "No shipper found with this email address.");
+          } else {
+            setEmailError("No shipper found with this email address.");
+            showToast("error", "No shipper found with this email address.");
+          }
+
         } else {
           setEmailError("");
           showToast("success", "Email sent to shipper successfully");
