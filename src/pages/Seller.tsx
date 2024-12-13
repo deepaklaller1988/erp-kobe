@@ -76,24 +76,24 @@ const Seller = () => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col justify-center items-center py-5">
-        <div className="mt-2 flex justify-between items-center w-[90%]">
-          <h1>All Products</h1>
+        <div className="mt-2 flex justify-between items-center w-full max-w-[1200px] mx-auto px-2">
+          <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">All Products</h1>
           <div className="flex gap-4">
             <button
               onClick={() => setShowAddProduct(true)}
-              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              className="px-4 py-2 bg-blue-800 text-white rounded-full hover:bg-blue-600"
             >
               Add Product
             </button>
             <button
               onClick={() => setShowAddOrder(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="px-4 py-2 bg-green-800 text-white rounded-full hover:bg-bgreen-600"
             >
               Add Order
             </button>
           </div>
         </div>
-        <div className="w-3/4">
+        <div className="mt-6 w-full bg-gray-400/10 rounded-lg p-2 max-w-[1200px] max-auto px-2">
           {loading && openAccordionIndex === null ? (
             <div className="w-full flex items-center justify-center">
               <MiniLoader />
@@ -117,7 +117,7 @@ const Seller = () => {
                     } border border-gray-200 hover:bg-gray-100 duration-300 rounded-lg overflow-hidden`}
                   >
                     <section
-                      className="flex flex-row gap-0 justify-between p-5 cursor-pointer"
+                      className="flex flex-row gap-0 justify-between p-5 cursor-pointer bg-white"
                       onClick={() =>
                         handleAccordionClick(itemIndex, item.productId)
                       }
@@ -144,11 +144,11 @@ const Seller = () => {
                     <section
                       className={`flex flex-col gap-2 transition w-full ${
                         itemIndex === openAccordionIndex
-                          ? "border-t h-auto"
+                          ? "border-t h-auto p-2"
                           : "max-h-0"
-                      } border-gray-300 px-2 overflow-hidden accordion duration-300`}
+                      } bg-white overflow-hidden accordion duration-300`}
                     >
-                      <div className="w-full">
+                      <div className="w-full border">
                         {loading && openAccordionIndex === itemIndex ? (
                           <div className="flex my-5">
                             <MiniLoader />
@@ -172,7 +172,7 @@ const Seller = () => {
                                 selector: (row: any) => row.label,
                                 cell: (row: any) => (
                                   <button
-                                    className="px-8 py-3 rounded-xl border bg-blue-400 text-white"
+                                    className="p-2 px-4 rounded-full bg-blue-800 text-white"
                                     onClick={() => handleView(row.label)}
                                   >
                                     View

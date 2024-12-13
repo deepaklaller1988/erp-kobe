@@ -4,6 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
 import MiniLoader from "./MiniLoader";
 import { toast } from "react-toastify";
+import { GrAttachment } from "react-icons/gr";
 
 interface PollModalProps {
   onClose: () => void;
@@ -186,20 +187,20 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-[400px]">
+      <div className="relative bg-white p-4 rounded-lg shadow-lg w-[400px]">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-black items-center"
           onClick={onClose}
         >
           <IoCloseSharp size={24} />
         </button>
-        <h1 className="mt-5 mb-1 text-black font-bold items-center">
+        <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">
           Add Order
         </h1>
 
         {/* Product ID Dropdown */}
         <p className="mt-5 mb-1 text-black">Product ID</p>
-        <div className="col-12 col-sm-6 mt-4">
+        <div className="col-12 col-sm-6">
           <Select
             name="productId"
             value={
@@ -233,7 +234,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         {/* Note Input */}
         <p className="mt-5 mb-1 text-black">Note</p>
         <input
-          className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
+          className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type="text"
           name="note"
           required
@@ -244,26 +245,29 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
 
         {/* Label File Upload */}
         <p className="mt-5 mb-1 text-black">Label (Upload File)</p>
+        <div className="flex gap-2 items-center rounded-full p-3.5 bg-black/5 outline-none w-full text-black relative">
+        <GrAttachment/>Attach File import 
         <input
-          className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
+          className="absolute w-full h-full opacity-0"
           type="file"
           name="pdf"
           accept="application/pdf"
           onChange={handleFileChange}
         />
+        </div>
         <p className="text-red-500">{labelError}</p>
 
         {/* Display uploaded file name */}
-        {userData.label && <p>Uploaded file: {userData.label}</p>}
+        {userData.label && <p className="text-xs font-semibold text-green-500 mt-2">Uploaded file: {userData.label}</p>}
 
-        <p className="mt-5">
+        <p className="mt-5 font-semibold">
           Available Quantity: {productDetails?.availableQuantity}
         </p>
 
         {/* Used Quantity */}
-        <p className="mt-2 mb-1 text-black">Used Quantity</p>
+        <p className=" mb-1 text-black">Used Quantity</p>
         <input
-          className="rounded-md p-3 w-full outline-none border border-[#D1D5DB] text-black"
+          className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type="text"
           name="usedQuantity"
           required
@@ -281,7 +285,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
           ) : (
             <button
               onClick={handleSubmit}
-              className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+              className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
               disabled={loading}
             >
               Submit

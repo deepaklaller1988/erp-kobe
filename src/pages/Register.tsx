@@ -110,10 +110,10 @@ const Register: React.FC = () => {
     toggleVisibility?: () => void
   ) => (
     <div className="mt-4">
-      <label className="mb-1 block text-black">{label}</label>
+      <label className="text-[15px] mb-1 block text-black">{label}</label>
       <div className="relative">
         <input
-          className="w-full rounded-md p-3 outline-none border border-gray-300 text-black"
+          className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type={showToggleIcon && toggleVisibility ? (type === "password" ? "text" : "password") : type}
           name={name}
           value={value}
@@ -133,7 +133,7 @@ const Register: React.FC = () => {
   );
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full p-4 flex justify-center items-center">
       <div className="w-96">
         {isSuccess ? (
           <div className="text-green-500 text-center">
@@ -151,7 +151,7 @@ const Register: React.FC = () => {
                   key={item.role}
                   type="button"
                   className={`p-5 rounded-xl flex flex-col items-center gap-2 w-full border duration-300 text-gray-300 ${
-                    userData.type === item.role ? "border-blue-600  !text-blue-600" : "hover:bg-gray-100"
+                    userData.type === item.role ? "border-blue-800  !text-blue-800" : "hover:bg-gray-100"
                   }`}
                   onClick={() => handleRoleSelection(item.role)}
                 >
@@ -170,7 +170,7 @@ const Register: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-md p-3 w-full bg-black text-white mt-8 hover:bg-black/80 transition duration-300"
+              className="rounded-full p-3 w-full bg-black text-white mt-8 hover:bg-black/80 transition duration-300"
             >
               {loading ? <MiniLoader/> : "Sign up"}
             </button>

@@ -47,18 +47,18 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
 
   return (
     <div className="fixed inset-0 z-10 bg-black/50 flex items-center justify-center">
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-[400px]">
+      <div className="relative bg-white p-4 rounded-lg shadow-lg w-[400px]">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-black items-center"
           onClick={onClose}
         >
           <IoCloseSharp size={24} />
         </button>
-        <h1 className="mt-10 mb-1 text-black font-bold items-center">
+        <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">
           Change status
         </h1>
-        <div>
-          <div className="flex flex-row gap-2">
+        <div className="flex flex-col gap-2 justify-center">
+          <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
             <input
               type="radio"
               name="status"
@@ -69,7 +69,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
             <label htmlFor="pending">Pending</label>
           </div>
 
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
             <input
               type="radio"
               name="status"
@@ -80,7 +80,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
             <label htmlFor="started">Started</label>
           </div>
 
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
             <input
               type="radio"
               name="status"
@@ -99,7 +99,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
           ) : (
             <button
               onClick={handleSubmit}
-              className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+              className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
             >
               Submit
             </button>

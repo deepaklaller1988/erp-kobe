@@ -134,14 +134,14 @@ const Invite = () => {
         )
       ) : (
         <>
-          <h1>Enter Shipper Email ID to invite</h1>
+          <h1 className="text-xl mb-2 text-blue-800 font-semibold text-center">Enter Shipper Email ID to invite</h1>
           <form
             onSubmit={formSubmit}
-            className="flex flex-col items-center justify-center gap-2 w-96 mt-5"
+            className="flex flex-col items-center justify-center w-full w-[300px]"
           >
             <div className="w-full">
               <input
-                className="rounded-md w-full p-3 outline-none border border-[#D1D5DB] text-black"
+                className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
                 type="text"
                 name="email"
                 value={shipperEmail}
@@ -154,7 +154,7 @@ const Invite = () => {
             </div>
             {loading ? <MiniLoader/> :  <button
               type="submit"
-              className="rounded-md p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-2 w-full"
+              className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
             >
               Send
             </button>}

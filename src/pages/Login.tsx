@@ -94,7 +94,7 @@ const Login: React.FC = () => {
             </h1>
             <p className="mt-10 mb-1 text-black">Email</p>
             <input
-              className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
+              className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
               type="text"
               name="email"
               required
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
             <p className="mt-4 mb-1 text-black">Password</p>
             <div className="relative">
               <input
-                className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
+                className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
                 type={passwordVisible ? "text" : "password"}
                 name="password"
                 required
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
             <p className="text-red-500">{passwordError}</p>
 
             <div className="flex justify-end pt-2">
-              <NavLink className="text-blue-600" to="/auth/forgotpassword">
+              <NavLink className="text-blue-800" to="/auth/forgotpassword">
                 Forgot Password
               </NavLink>
             </div>
@@ -133,7 +133,7 @@ const Login: React.FC = () => {
             ) : (
               <button
                 type="submit"
-                className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
+                className="rounded-full p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
               >
                 Login
               </button>

@@ -53,7 +53,7 @@ const ForgotPassword: React.FC = () => {
           </h1>
           <p className="mt-6 text-black">Email Address</p>
           <input
-            className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
+            className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
             type="email"
             placeholder="Enter your email"
             value={userData.email}
@@ -65,7 +65,7 @@ const ForgotPassword: React.FC = () => {
           <button
           onClick={handleEmail}
             type="submit"
-            className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
+            className="rounded-full p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
           >
             Send Password Link
           </button>

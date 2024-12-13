@@ -74,22 +74,22 @@ const Shipper = () => {
       name: "Product",
       selector: (row) => row.products[0].name,
       sortable: true,
-      width: "15%",
+      // width: "15%",
     },
     {
       name: "Used Quantity",
       selector: (row) => row.usedQuantity,
       sortable: true,
-      width: "15%",
+      // width: "15%",
     },
     {
       name: "Label",
       selector: (row) => row.label,
       sortable: true,
-      width: "15%",
+      // width: "15%",
       cell: (row) => (
         <button
-          className="px-8 py-3 rounded-xl border bg-blue-400 text-white"
+          className="p-2 px-4 rounded-full bg-blue-800 text-white"
           onClickCapture={() => handleView(row.label)}
         >
           View
@@ -100,22 +100,22 @@ const Shipper = () => {
       name: "Status",
       selector: (row) => row.status,
       sortable: true,
-      width: "15%",
+      // width: "15%",
     },
     {
       name: "Created At",
       selector: (row) => row.createdAt?.substring(0, 10),
       sortable: true,
-      width: "15%",
+      // width: "15%",
     },
     {
       name: "Change status",
       selector: (row) => row.orderId,
       sortable: true,
-      width: "15%",
+      // width: "15%",
       cell: (row) => (
         <button
-          className="px-3 py-3 rounded-xl border bg-black text-white flex flex-row gap-2 items-center justify-center"
+          className="p-2 px-4 rounded-full bg-black text-white flex flex-row gap-2 items-center justify-center"
           onClickCapture={() => openStatusPopup(true, row.orderId)}
         >
           Select status
@@ -136,7 +136,7 @@ const Shipper = () => {
           orderId={orderId}
         />
       )}
-      <div className="w-3/4">
+      <div className="w-full max-w-[1200px] max-auto px-2">
         {loading ? (
           <div className="flex">
           <MiniLoader />
@@ -167,7 +167,7 @@ const Shipper = () => {
                     >
                       <div className="w-full flex gap-3 sm:gap-6 items-center justify-between">
                         <div className="flex flex-row items-center justify-start w-full">
-                          <p className="text-black font-semibold">
+                          <p className="text-black capitalize font-semibold">
                             {item?.seller_name}
                           </p>
                         </div>
@@ -183,9 +183,9 @@ const Shipper = () => {
                     <section
                       className={`flex flex-col gap-2 transition w-full ${
                         itemIndex === openAccordionIndex
-                          ? "border-t h-auto"
+                          ? "border-t p-4 h-auto"
                           : "max-h-0"
-                      } border-gray-300 px-2 overflow-hidden accordion duration-300`}
+                      } border-gray-300 overflow-hidden accordion duration-300`}
                     >
                       <div className="w-full">
                         {loading1 ? (
