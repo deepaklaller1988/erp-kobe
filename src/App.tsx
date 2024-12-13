@@ -23,24 +23,22 @@ const Layout = () => {
     const storedToken = localStorage.getItem("accessToken");
     console.log("storedToken",storedToken)
     setToken(storedToken);
-    setLoading(false); // Set loading to false once the token is checked
-  }, []);
+    setLoading(false);
+  }, []); 
 
   useEffect(() => {
-    if (loading) return; // Skip the logic until we are done with loading
+    if (loading) return;
 
     const authRoutes = ["/auth/login", "/auth/register", "/auth/forgotpassword", "/auth/verification"];
     const isAuthRoute = authRoutes.includes(location.pathname);
 
-    // If the user is not authenticated and not on an auth route, redirect to login
-    if (!token && !isAuthRoute) {
-      navigate("/auth/login", { replace: true });
+    if (!token) {
+      navigate("/auth/login");
     }
 
-    // If the user is authenticated and on an auth route, redirect to home
-    if (token && isAuthRoute) {
-      navigate("/", { replace: true });
-    }
+    // if (token && isAuthRoute) {
+    //   navigate("/", { replace: true });
+    // }
   }, [token, loading, location.pathname, navigate]);
 
   const isAuthRoute = [

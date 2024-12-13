@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MiniLoader from "../components/MiniLoader";
-import { toasterSuccess } from "../components/core/Toaster";
+// import { toast, ToastContainer } from "react-toastify";
 
 const Login: React.FC = () => {
   useTitle({ title: "Login" });
@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  // const notify = () => toast("Successfully Login");
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,9 +30,11 @@ const Login: React.FC = () => {
       if (response.success === true) {
         const { accessToken, type } = response.data;
         localStorage.setItem("accessToken", accessToken);
+
         localStorage.setItem("type", type);
         router(response.data.type === "seller" ? "/seller" : "/shipper");
-        toasterSuccess(response.result,1000, "id")
+        // notify();
+        // <ToastContainer />
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
           setEmailError("No user found with this email address.");
