@@ -66,6 +66,7 @@ const Login: React.FC = () => {
       }
     } catch (err: any) {
       console.error("Request Error:", err);
+      console.log("asdasd");
       setEmailError("An error occurred, please try again.");
       toast.error("An unexpected error occurred. Please try again.", {
         position: "bottom-right",
@@ -106,7 +107,9 @@ const Login: React.FC = () => {
       <div className="w-full h-screen flex justify-center items-center">
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
-            <h1 className="text-black font-bold text-5xl text-center">Sign in</h1>
+            <h1 className="text-black font-bold text-5xl text-center">
+              Sign in
+            </h1>
             <p className="mt-10 mb-1 text-black">Email</p>
             <input
               className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] text-black"
