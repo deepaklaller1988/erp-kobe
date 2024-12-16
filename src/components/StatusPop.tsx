@@ -18,7 +18,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
     try {
  
       if (select === "" || select === undefined || select === null) {
-        setError("Please select status");
+        setError("请选择状态");
       } else {
         let data = {
           orderId,
@@ -55,7 +55,8 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
           <IoCloseSharp size={24} />
         </button>
         <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">
-          Change status
+         
+更改状态
         </h1>
         <div className="flex flex-col gap-2 justify-center">
           <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
@@ -66,7 +67,8 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
               checked={select === "pending"}
               onChange={() => handleSelect("pending")}
             />
-            <label htmlFor="pending">Pending</label>
+            <label htmlFor="pending">
+            待办的</label>
           </div>
 
           <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
@@ -77,7 +79,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
               checked={select === "started"}
               onChange={() => handleSelect("started")}
             />
-            <label htmlFor="started">Started</label>
+            <label htmlFor="started">开始</label>
           </div>
 
           <div className="flex flex-row gap-2 items-center cursor-pointer bg-black/5 rounded-full p-2 px-4">
@@ -88,7 +90,8 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
               checked={select === "completed"}
               onChange={() => handleSelect("completed")}
             />
-            <label htmlFor="completed">Completed</label>
+            <label htmlFor="completed">
+            完全的</label>
           </div>
         </div>
         <p className="text-red-500 mt-2">{error}</p>
@@ -101,7 +104,7 @@ const StatusPop = ({ onClose, onSuccess, orderId }: PollModalProps) => {
               onClick={handleSubmit}
               className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
             >
-              Submit
+              提交
             </button>
           )}
         </div>

@@ -9,12 +9,12 @@ const Successmessage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen">
-      <h1 className="text-4xl">Account Activated Successfully</h1>
+      <h1 className="text-4xl">账户激活成功</h1>
       <button
         className="text-xl font-bold px-10 py-3 rounded-xl border bg-black text-white hover:bg-black/70 mt-8 duration-300"
         onClick={handleOk}
       >
-        OK
+       好的
       </button>
     </div>
   );

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import useTitle from "../hooks/useTitle";
 
 const Register: React.FC = () => {
-  useTitle({ title: "Register" });
+  useTitle({ title: "登记" });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,29 +44,29 @@ const Register: React.FC = () => {
     const newErrors: Record<string, string> = {};
 
     if (!type) {
-      newErrors.type = "Please select a role.";
+      newErrors.type = "请选择一个角色。";
     }
     if (!name.trim()) {
-      newErrors.name = "Name is required.";
+      newErrors.name = "姓名为必填项。";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      newErrors.email = "Email is required.";
+      newErrors.email = "需要电子邮件。";
     } else if (!emailRegex.test(email)) {
-      newErrors.email = "Invalid email format.";
+      newErrors.email = "电子邮件格式无效。";
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
     if (!password) {
-      newErrors.password = "Password is required.";
+      newErrors.password = "需要密码。";
     } else if (!passwordRegex.test(password)) {
-      newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.";
+      newErrors.password = "密码必须至少为 8 个字符，包括大写字母、小写字母、数字和特殊字符。";
     }
     if (!confirmpassword) {
-      newErrors.confirmpassword = "Confirm Password is required.";
+      newErrors.confirmpassword = "需要确认密码。";
     } else if (password !== confirmpassword) {
-      newErrors.confirmpassword = "Passwords do not match.";
+      newErrors.confirmpassword = "密码不匹配。";
     }
 
     setErrors(newErrors);
@@ -88,16 +88,16 @@ const Register: React.FC = () => {
       const response = await API.post("auth/register", userData);
       if (response.success) {
         setIsSuccess(true);
-        showToast("success", "Registration successful! Please check your email for a verification link.");
+        showToast("success", "注册成功！请检查您的电子邮件以获取验证链接。");
         setUserData({ type: "", name: "", email: "", password: "", confirmpassword: "" });
       } else if (response.error?.code === "ERR_EMAIL_ALREADY_EXIST") {
-        setErrors((prev) => ({ ...prev, email: "This email is already registered. Please use a different email." }));
-        showToast("error", "This email is already registered. Please use a different email.");
+        setErrors((prev) => ({ ...prev, email: "此邮箱号已被注册。请使用不同的电子邮件。" }));
+        showToast("error", "此邮箱号已被注册。请使用不同的电子邮件。");
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      setErrors((prev) => ({ ...prev, general: "An unexpected error occurred. Please try again later." }));
-      showToast("error", "An unexpected error occurred. Please try again later.");
+      setErrors((prev) => ({ ...prev, general: "发生意外错误。请稍后重试。" }));
+      showToast("error", "发生意外错误。请稍后重试。");
     } finally {
       setLoading(false);
     }
@@ -140,16 +140,18 @@ const Register: React.FC = () => {
       <div className="w-96">
         {isSuccess ? (
           <div className="text-green-500 text-center">
-            <p className="font-bold text-2xl">Registration successful! Check your email to activate your account.</p>
+            <p className="font-bold text-2xl">
+            注册成功！检查您的电子邮件以激活您的帐户。</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <h1 className="text-black font-bold text-5xl text-center">Register</h1>
+            <h1 className="text-black font-bold text-5xl text-center">登记</h1>
 
-            <p className="mt-10 mb-1 text-black">Choose Your Role</p>
+            <p className="mt-10 mb-1 text-black">
+            选择你的角色</p>
             <div className="flex justify-center gap-5">
-              {[{ role: "seller", icon: <FaBalanceScale size={35} />, label: "Seller" },
-              { role: "shipper", icon: <MdDeliveryDining size={35} />, label: "Shipper" }].map((item) => (
+              {[{ role: "seller", icon: <FaBalanceScale size={35} />, label: "卖方" },
+              { role: "shipper", icon: <MdDeliveryDining size={35} />, label: "托运人" }].map((item) => (
                 <button
                   key={item.role}
                   type="button"
@@ -164,28 +166,29 @@ const Register: React.FC = () => {
             </div>
             {errors.type && <p className="text-red-500 mt-2">{errors.type}</p>}
 
-            {renderInputField("Name", "text", "name", userData.name)}
-            {renderInputField("Email", "email", "email", userData.email)}
-            {renderInputField("Password", passwordVisible ? "text" : "password", "password", userData.password, true, () => setPasswordVisible((prev) => !prev))}
-            {renderInputField("Confirm Password", confirmPasswordVisible ? "text" : "password", "confirmpassword", userData.confirmpassword, true, () => setConfirmPasswordVisible((prev) => !prev))}
+            {renderInputField("姓名", "text", "name", userData.name)}
+            {renderInputField("电子邮件", "email", "email", userData.email)}
+            {renderInputField("密码", passwordVisible ? "text" : "password", "password", userData.password, true, () => setPasswordVisible((prev) => !prev))}
+            {renderInputField("确认密码", confirmPasswordVisible ? "text" : "password", "confirmpassword", userData.confirmpassword, true, () => setConfirmPasswordVisible((prev) => !prev))}
 
             <button
               type="submit"
               disabled={loading}
               className="rounded-full p-3 w-full bg-black text-white mt-8 hover:bg-black/80 transition duration-300"
             >
-              {loading ? <MiniLoader /> : "Sign up"}
+              {/* {loading ? <MiniLoader /> : "Sign up"} */}
+              {loading ? <MiniLoader /> : "报名"}
             </button>
             {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
           </form>
         )}
         <div className="mt-5 flex gap-2 text-black">
-          <span>Already have an account ?</span>
+          <span>已有账户?</span>
           <Link
             to="/auth/login"
             className="text-black hover:text-black/80 duration-300"
           >
-            Sign in
+            登入
           </Link>
         </div>
       </div>

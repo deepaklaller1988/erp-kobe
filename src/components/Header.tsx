@@ -34,15 +34,17 @@ export const Header = () => {
     return !word ? "" : word.charAt(0).toUpperCase() + word.substring(1);
   };
 
+  const typeOfUser: any = (userDetails?.type === "seller" ? "卖方" : "托运人");
+  // console.log("user type : " , typeOfUser)
   return (
     <header className="p-8 lg:px-8 px-5 w-full bg-black">
       <div className="flex flex-col h-full justify-between">
         <div className="header-inner flex justify-between items-center">
           <div className="header-icon">
             <h1 className=" text-white font-bold text-2xl">
-              ERP ({capitalizeWords(userDetails?.type)} dashboard)
+              企业资源计划 ({capitalizeWords(typeOfUser)} 仪表板)
             </h1>
-            <p className="mt-1 text-gray-200">Welcome, {userDetails?.name}</p>
+            <p className="mt-1 text-gray-200">欢迎, {userDetails?.name}</p>
           </div>
           <div className="menu-list">
             <ul className="flex gap-3 items-center">
@@ -51,7 +53,9 @@ export const Header = () => {
                   onClick={gotoDashboard}
                   className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer"
                 >
-                  Dashboard
+                  {/* Dashboard */}
+                  仪表板
+
                 </button>
               </li>
               {userDetails?.type === "seller" && (
@@ -60,7 +64,8 @@ export const Header = () => {
                     to="/invite-shipper"
                     className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full hidden sm:inline-block cursor-pointer"
                   >
-                    Invite Shipper
+                    {/* Invite Shipper */}
+                    邀请托运人
                   </NavLink>
                 </li>
               )}
@@ -69,7 +74,8 @@ export const Header = () => {
                   onClick={handleLogout}
                   className="hover:bg-[#355489] duration-300 hover:text-[white] text-white/70 py-3 px-4 rounded-full sm:inline-block hidden cursor-pointer"
                 >
-                  Logout
+                  {/* Logout */}
+                  退出
                 </button>
               </li>
             </ul>

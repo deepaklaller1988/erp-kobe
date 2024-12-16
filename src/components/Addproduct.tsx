@@ -32,11 +32,11 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
     const postProduct = async (data: { name: string; totalQuantity: string }) => {
         try {
             const response = await API.post("product", data);
-            showToast("success", "Product added successfully");
+            showToast("success", "产品添加成功");
             onSuccess();
         } catch (error) {
             console.error("Error during product submission:", error);
-            showToast("error", "An error occurred while adding product");
+            showToast("error", "添加产品时出错");
         } finally {
             setLoading(false);
         }
@@ -64,11 +64,11 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
 
         let valid = true;
         if (!name) {
-            setProductError("Product name is required.");
+            setProductError("产品名称为必填项。");
             valid = false;
         }
         if (!totalQuantity) {
-            setQuantityError("Quantity is required.");
+            setQuantityError("数量为必填项。");
             valid = false;
         }
 
@@ -93,8 +93,9 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
                 >
                     <IoCloseSharp size={24} />
                 </button>
-                <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">Add Product</h1>
-                <p className="mt- mb-1 text-black">Product Name</p>
+                <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">
+                添加产品</h1>
+                <p className="mt- mb-1 text-black">产品名称</p>
                 <input
                     className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
                     type="text"
@@ -105,7 +106,7 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
                 />
                 <p className="text-red-500">{productError}</p>
 
-                <p className="mt-4 mb-1 text-black">Quantity</p>
+                <p className="mt-4 mb-1 text-black">数量</p>
                 <input
                     className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
                     type="text"
@@ -122,7 +123,7 @@ const AddProduct = ({ onClose,onSuccess }: PollModalProps) => {
                             onClick={handleSubmit}
                             className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
                         >
-                            Submit
+                            提交
                         </button>
                     }
                 </div>
