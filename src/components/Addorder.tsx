@@ -56,15 +56,15 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     label: string;
   }) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await API.post("order", data);
-      showToast("success","Order added successfully")
+      showToast("success", "Order added successfully");
       onSuccess();
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error("Error during product submission:", error);
-      setLoading(false)
-      showToast("error","An error occurred while adding order")
+      setLoading(false);
+      showToast("error", "An error occurred while adding order");
     }
   };
 
@@ -111,7 +111,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
 
       try {
         let response = await fetch(
-          "http://localhost:5000/api/v1/order/upload-label",
+          `${process.env.REACT_APP_API_URL}order/upload-label`,
           {
             method: "POST",
             body: formData,
@@ -245,19 +245,24 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         {/* Label File Upload */}
         <p className="mt-5 mb-1 text-black">Label (Upload File)</p>
         <div className="flex gap-2 items-center rounded-full p-3.5 bg-black/5 outline-none w-full text-black relative">
-        <GrAttachment/>Attach File import 
-        <input
-          className="absolute w-full h-full opacity-0"
-          type="file"
-          name="pdf"
-          accept="application/pdf"
-          onChange={handleFileChange}
-        />
+          <GrAttachment />
+          Attach File import
+          <input
+            className="absolute w-full h-full opacity-0"
+            type="file"
+            name="pdf"
+            accept="application/pdf"
+            onChange={handleFileChange}
+          />
         </div>
         <p className="text-red-500">{labelError}</p>
 
         {/* Display uploaded file name */}
-        {userData.label && <p className="text-xs font-semibold text-green-500 mt-2">Uploaded file: {userData.label}</p>}
+        {userData.label && (
+          <p className="text-xs font-semibold text-green-500 mt-2">
+            Uploaded file: {userData.label}
+          </p>
+        )}
 
         <p className="mt-5 font-semibold">
           Available Quantity: {productDetails?.availableQuantity}
@@ -279,7 +284,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         <div className="text-center">
           {loading ? (
             <div className="mt-4">
-            <MiniLoader />
+              <MiniLoader />
             </div>
           ) : (
             <button
