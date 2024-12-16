@@ -58,13 +58,13 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     try {
       setLoading(true)
       const response = await API.post("order", data);
-      showToast("success","Order added successfully")
+      showToast("success","订单添加成功")
       onSuccess();
       setLoading(false)
     } catch (error) {
       console.error("Error during product submission:", error);
       setLoading(false)
-      showToast("error","An error occurred while adding order")
+      showToast("error","添加订单时出错")
     }
   };
 
@@ -84,7 +84,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
 
       if (usedQuantityValue > availableQuantityValue) {
         setQuantityError(
-          "Quantity cannot be more than the available quantity."
+          "数量不能多于可用数量。"
         );
       } else {
         setQuantityError(null);
@@ -131,19 +131,19 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     const { note, usedQuantity, productId, label } = userData;
     let valid = true;
     if (!note) {
-      setProductError("Order name is required.");
+      setProductError("订单名称为必填项。");
       valid = false;
     }
     if (!usedQuantity) {
-      setQuantityError("Used Quantity is required.");
+      setQuantityError("已用数量为必填项。");
       valid = false;
     }
     if (!productId) {
-      setProductIdError("Product ID is required.");
+      setProductIdError("需要产品 ID。");
       valid = false;
     }
     if (!label) {
-      setLabelError("Label file is required.");
+      setLabelError("需要标签文件。");
       valid = false;
     }
     if (valid) {
@@ -194,11 +194,12 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
           <IoCloseSharp size={24} />
         </button>
         <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">
-          Add Order
+        添加订单
         </h1>
 
         {/* Product ID Dropdown */}
-        <p className="mt-5 mb-1 text-black">Product ID</p>
+        <p className="mt-5 mb-1 text-black">
+        产品编号</p>
         <div className="col-12 col-sm-6">
           <Select
             name="productId"
@@ -214,7 +215,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
             }
             menuShouldScrollIntoView={false}
             isClearable
-            placeholder="Select a Product"
+            placeholder="选择产品"
             className="dropDownFixes rounded-md formDropDown mt-1 text-sm borderBottom"
             options={productIdData.map((items: any) => ({
               label: items.name,
@@ -231,7 +232,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         </div>
 
         {/* Note Input */}
-        <p className="mt-5 mb-1 text-black">Note</p>
+        <p className="mt-5 mb-1 text-black">笔记</p>
         <input
           className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type="text"
@@ -243,9 +244,10 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         <p className="text-red-500">{productError}</p>
 
         {/* Label File Upload */}
-        <p className="mt-5 mb-1 text-black">Label (Upload File)</p>
+        <p className="mt-5 mb-1 text-black">
+        标签 (上传文件)</p>
         <div className="flex gap-2 items-center rounded-full p-3.5 bg-black/5 outline-none w-full text-black relative">
-        <GrAttachment/>Attach File import 
+        <GrAttachment/>附加文件导入
         <input
           className="absolute w-full h-full opacity-0"
           type="file"
@@ -257,14 +259,15 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         <p className="text-red-500">{labelError}</p>
 
         {/* Display uploaded file name */}
-        {userData.label && <p className="text-xs font-semibold text-green-500 mt-2">Uploaded file: {userData.label}</p>}
+        {userData.label && <p className="text-xs font-semibold text-green-500 mt-2">
+          上传的文件: {userData.label}</p>}
 
         <p className="mt-5 font-semibold">
-          Available Quantity: {productDetails?.availableQuantity}
+        可用数量: {productDetails?.availableQuantity}
         </p>
 
         {/* Used Quantity */}
-        <p className=" mb-1 text-black">Used Quantity</p>
+        <p className=" mb-1 text-black">使用数量</p>
         <input
           className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type="text"
@@ -287,7 +290,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
               className="rounded-full p-2 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
               disabled={loading}
             >
-              Submit
+              提交
             </button>
           )}
         </div>

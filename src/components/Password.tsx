@@ -47,13 +47,13 @@ const Password = () => {
       newErrors.password = "Password is required.";
     } else if (!passwordRegex.test(password)) {
       newErrors.password =
-        "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters.";
+        "密码必须至少包含8个字符，包括大写、小写、数字和特殊字符。";
     }
 
     if (!newPassword) {
-      newErrors.confirmPassword = "Please confirm your password.";
+      newErrors.confirmPassword = "请确认您的密码。";
     } else if (password !== newPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+      newErrors.confirmPassword = "密码不匹配。";
     }
 
     setErrors(newErrors);
@@ -68,12 +68,12 @@ const Password = () => {
         password,
       });
       if (response.status === 200) {
-        setSuccess("Password updated successfully!");
-        showToast("success","Password updated successfully")
+        setSuccess("密码更新成功！");
+        showToast("success","密码更新成功！")
 
       } else {
         setError("Failed to update password. Please try again.");
-        showToast("error", "Failed to update password. Please try again");
+        showToast("error", "更新密码失败。请重试");
 
       }
     } catch (err: any) {
@@ -89,14 +89,15 @@ const Password = () => {
     <div className="w-full h-screen flex justify-center items-center">
       <div className="max-w-[500px]">
         <h1 className="text-black font-bold text-5xl text-center">
-          Create New Password
+          
+创建新密码
         </h1>
-        <p className="mt-4 text-black">New Password</p>
+        <p className="mt-4 text-black">新密码</p>
         <div className="relative">
           <input
             className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
             type={passwordVisible ? "text" : "password"}
-            placeholder="Enter New Password"
+            placeholder="输入新密码"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -109,7 +110,8 @@ const Password = () => {
         </div>
         {errors.password && <p className="text-red-500">{errors.password}</p>}
 
-        <p className="mt-4 text-black">Confirm Password</p>
+        <p className="mt-4 text-black">
+        确认密码</p>
         <div className="relative">
           <input
             className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
@@ -133,7 +135,7 @@ const Password = () => {
           onClick={handleSubmitNewPassword}
           className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
         >
-          Reset Password
+          重置密码
         </button>
         {success && <p className="text-green-500 mt-4">{success}</p>}
         {error && <p className="text-red-500 mt-4">{error}</p>}

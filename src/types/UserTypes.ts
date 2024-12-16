@@ -6,4 +6,5 @@ export interface userDetailsAttributes {
     type: string;
     userId: string;
     verified: boolean;
+    typeOfUser:any;
 }

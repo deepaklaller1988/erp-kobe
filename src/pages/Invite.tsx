@@ -44,13 +44,13 @@ const Invite = () => {
           `seller-shipper/invitation?token=${checkToken}`
         );
         if (response.error?.code === "ERR_INVITATION_ALREADY_ACCEPTED") {
-          showToast("error", "This invitation has already been accepted.");
-          setEmailError("This invitation has already been accepted.");
+          showToast("error", "此邀请已被接受。");
+          setEmailError("此邀请已被接受。");
         }
       } catch (error) {
         console.error("Error fetching invitation:", error);
-        setEmailError("An error occurred while accepting the invitation.");
-        showToast("error", "An error occurred while accepting the invitation.");
+        setEmailError("接受邀请时发生错误。");
+        showToast("error", "接受邀请时发生错误。");
       }
       setIsLoading(false);
     }
@@ -67,10 +67,10 @@ const Invite = () => {
   const validateInputs = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!shipperEmail) {
-      setEmailError("Email is required.");
+      setEmailError("需要电子邮件。");
       return false;
     } else if (!emailRegex.test(shipperEmail)) {
-      setEmailError("Please enter a valid email.");
+      setEmailError("请输入有效的电子邮件。");
       return false;
     }
     setEmailError(null);
@@ -87,27 +87,27 @@ const Invite = () => {
         });
         if (!response.success) {
           if (response.error?.code === "ERR_SHIPPER_NOT_FOUND") {
-            setEmailError("No shipper found with this email address.");
-            showToast("error", "No shipper found with this email address.");
+            setEmailError("未找到使用此电子邮件地址的发件人。");
+            showToast("error", "未找到使用此电子邮件地址的发件人。");
           } else if (response.error?.code === "ERR_SHIPPER_ALREADY_INVITED") {
-            setEmailError("This shipper was already invited");
-            showToast("error", "This shipper was already invited");
+            setEmailError("该托运人已被邀请");
+            showToast("error", "该托运人已被邀请");
           } else if (response.error?.code === "ERR_SHIPPER_NOT_VERIFIED") {
-            setEmailError("No shipper found with this email address.");
-            showToast("error", "No shipper found with this email address.");
+            setEmailError("未找到使用此电子邮件地址的发件人。");
+            showToast("error", "未找到使用此电子邮件地址的发件人。");
           } else {
-            setEmailError("No shipper found with this email address.");
-            showToast("error", "No shipper found with this email address.");
+            setEmailError("未找到使用此电子邮件地址的发件人。");
+            showToast("error", "未找到使用此电子邮件地址的发件人。");
           }
 
         } else {
           setEmailError("");
-          showToast("success", "Email sent to shipper successfully");
+          showToast("success", "电子邮件已成功发送给发货人");
         }
       } catch (error) {
         console.error("Error sending invite:", error);
-        setEmailError("An error occurred while sending the invitation.");
-        showToast("error", "An error occurred while sending the invitation.");
+        setEmailError("发送邀请时出错。");
+        showToast("error", "发送邀请时出错。");
       } finally {
         setLoading(false);
       }
@@ -131,9 +131,10 @@ const Invite = () => {
               <p className="text-gray-500 text-xl">{emailError}</p>
             ) : (
               <>
-                <h1 className="text-4xl">Seller invitation accepted!</h1>
+                <h1 className="text-4xl">卖家邀请已接受！</h1>
                 <p className="text-gray-500 text-xl">
-                  Now you will see all products of this seller
+                  
+现在您将看到该卖家的所有产品
                 </p>
               </>
             )}
@@ -141,13 +142,14 @@ const Invite = () => {
               className="text-xl font-bold px-10 py-3 rounded-xl border bg-black text-white hover:bg-black/70 duration-300 mt-8"
               onClick={handleOk}
             >
-              OK
+             好的
             </button>
           </div>
         )
       ) : (
         <>
-          <h1 className="text-xl mb-2 text-blue-800 font-semibold text-center">Enter Shipper Email ID to invite</h1>
+          <h1 className="text-xl mb-2 text-blue-800 font-semibold text-center">
+          输入发件人电子邮件 ID 以邀请</h1>
           <form
             onSubmit={formSubmit}
             className="flex flex-col items-center justify-center w-[300px]"
@@ -159,7 +161,7 @@ const Invite = () => {
                 name="email"
                 value={shipperEmail}
                 onChange={handleEmailChange}
-                placeholder="Email ID"
+                placeholder="电子邮件地址"
               />
               {emailError && (
                 <p className="text-red-500 text-sm">{emailError}</p>
@@ -172,7 +174,7 @@ const Invite = () => {
                 type="submit"
                 className="rounded-full p-3 px-10 transition text-white bg-black hover:bg-black/80 mt-5 w-full"
               >
-                Send
+                发送
               </button>
             )}
           </form>

@@ -4,11 +4,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MiniLoader from "../components/MiniLoader";
-import { ToastContainer, toast } from "react-toastify";
+import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login: React.FC = () => {
-  useTitle({ title: "Login" });
+  useTitle({ title: "登录" });
   const router = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
@@ -45,21 +45,21 @@ const Login: React.FC = () => {
         localStorage.setItem("userDetails", JSON.stringify(response.data));
 
         router(type === "seller" ? "/seller" : "/shipper");
-        showToast("success","Login Successfully")
+        showToast("success","登录成功")
       } else {
         if (response.error?.code === "ERR_USER_NOT_FOUND") {
-          setEmailError("No user found with this email address.");
+          setEmailError("未找到使用此电子邮件地址的用户。");
         } else if (response.error?.code === "ERR_WRONG_PASSWORD") {
-          setPasswordError("Incorrect password.");
+          setPasswordError("密码不正确。");
         } else {
-          setEmailError("Invalid email");
+          setEmailError("电子邮件无效");
         }
-        showToast("error", "Login failed. Please check your credentials.");
+        showToast("error", "登录失败。请检查您的凭据。");
       }
     } catch (err: any) {
       console.error("Request Error:", err);
-      setEmailError("An error occurred, please try again.");
-      showToast("warn", "An unexpected error occurred. Please try again.");
+      setEmailError("发生错误，请重试。");
+      showToast("warn", "发生错误，请重试。");
     } finally {
       setLoading(false);
     }
@@ -89,9 +89,10 @@ const Login: React.FC = () => {
         <div className="w-96">
           <form onSubmit={handleFormSubmit} className="flex flex-col w-full">
             <h1 className="text-black font-bold text-5xl text-center">
-              Sign in
+              {/* Sign in */}
+              登入
             </h1>
-            <p className="mt-10 mb-1 text-black">Email</p>
+            <p className="mt-10 mb-1 text-black">电子邮件</p>
             <input
               className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
               type="text"
@@ -102,7 +103,7 @@ const Login: React.FC = () => {
             />
             <p className="text-red-500">{emailError}</p>
 
-            <p className="mt-4 mb-1 text-black">Password</p>
+            <p className="mt-4 mb-1 text-black">密码</p>
             <div className="relative">
               <input
                 className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
@@ -123,7 +124,8 @@ const Login: React.FC = () => {
 
             <div className="flex justify-end pt-2">
               <NavLink className="text-blue-800" to="/auth/forgot-password">
-                Forgot Password
+                {/* Forgot Password */}
+                忘记密码
               </NavLink>
             </div>
 
@@ -134,17 +136,19 @@ const Login: React.FC = () => {
                 type="submit"
                 className="rounded-full p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-5 duration-300"
               >
-                Login
+                {/* Login */}
+                登录
               </button>
             )}
 
             <div className="mt-10 flex gap-2 text-black">
-              <span>Don't have an account?</span>
+              <span>没有帐户？</span>
               <Link
                 to="/auth/register"
                 className="text-black hover:text-black/80 duration-300"
               >
-                Sign up
+                {/* Sign up */}
+                报名
               </Link>
             </div>
           </form>

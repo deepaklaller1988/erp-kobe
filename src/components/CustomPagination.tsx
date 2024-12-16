@@ -26,7 +26,8 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   return (
     <div className="flex justify-between items-center gap-4 my-6">
       <button onClick={handlePrev} className="bg-[#efefef] text-black px-3 py-1 rounded-lg border-[1px] border-white hover:border-black duration-300 hover:bg-blue-600">
-        Previous
+        
+以前的
       </button>
       <section className="flex gap-2">
       <button className="bg-[#efefef] px-3 py-1 rounded-lg border-[1px] text-black  hover:border-black duration-300 hover:bg-blue-600">
@@ -40,7 +41,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
       </button>
       </section>
       <button onClick={handleNext} className="bg-[#efefef] text-black px-3 py-1 rounded-lg border-[1px] hover:bg-blue-600  border-white hover:border-black duration-300">
-        Next
+      下一个
       </button>
     </div>
   );

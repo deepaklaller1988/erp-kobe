@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
-  useTitle({ title: "Forgot Password" });
+  useTitle({ title: "忘记密码" });
   const [success, setSuccess] = useState<string | null>(null);
   const [userData, setUserData] = useState({
     email: "",
@@ -36,19 +36,19 @@ const ForgotPassword: React.FC = () => {
       setIsLoading(false)
       if (!response.success) {
         if (response.error?.code === "ERR_SHIPPER_NOT_FOUND") {    
-          showToast("error", "Shipper not found");
+          showToast("error", "未找到发货人");
         }else if(response.error?.code === "ERR_USER_NOT_FOUND"){
-          showToast("error", "This email is not registered");
+          showToast("error", "该邮箱尚未注册");
         }
       }else{
-        showToast("success","Password link send successfully")
+        showToast("success","密码链接发送成功")
 
       }
       //  setUserData({
       //   email: "",   
       // });
     } catch (error) {
-      showToast("error", "This email is not registered");
+      showToast("error", "该邮箱尚未注册");
     
       console.log(error)
     }
@@ -56,20 +56,20 @@ const ForgotPassword: React.FC = () => {
     const newErrors: any = {};
 
     if (!userData.email) {
-      newErrors.email = "Email is required.";
+      newErrors.email = "需要电子邮件。";
     } else if (!emailRegex.test(userData.email)) {
-      newErrors.email = "Please enter a valid email.";
+      newErrors.email = "请输入有效的电子邮件。";
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
       return;
     }
     try {
-      setSuccess("Verification link sent to your email.");
+      setSuccess("验证链接已发送到您的电子邮件。");
     } catch (err: any) {
       console.error(err);
       setErrors({ email: err.message || "Error sending verification link." });
-      showToast("error", "Error sending verification link.");
+      showToast("error", "发送验证链接时出错。");
     }
   };
 
@@ -77,9 +77,10 @@ const ForgotPassword: React.FC = () => {
     <div className="w-full h-screen flex justify-center items-center">
       <div className="m-w-[500px] flex flex-col justify-center items-center">
         <h1 className="text-black font-bold text-5xl text-center">
-          Send Password Reset Link
+        发送密码重置链接
         </h1>
-        <p className="mt-6 text-black !text-start w-full mb-2">Email Address</p>
+        <p className="mt-6 text-black !text-start w-full mb-2">电子邮件
+        </p>
         <input
           className="rounded-full p-3 bg-black/5 outline-none w-full text-black"
           type="email"
@@ -99,17 +100,17 @@ const ForgotPassword: React.FC = () => {
             type="submit"
             className="rounded-full w-full p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
           >
-            Send Password Link
+            发送密码链接
           </button>
         }
         {/* {success && <p className="text-green-500">{success}</p>} */}
         <div className="mt-5 flex gap-2 text-black">
-              <span>Go back to login ?</span>
+              <span>返回登录 ?</span>
               <Link
                 to="/auth/login"
                 className="text-black hover:text-black/80 duration-300"
               >
-                Sign in
+                登入
               </Link>
             </div>
       </div>

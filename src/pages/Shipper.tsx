@@ -11,7 +11,7 @@ import Select from "react-select";
 import StatusPop from "../components/StatusPop";
 
 const Shipper = () => {
-  useTitle({ title: "Shipper Dashboard" });
+  useTitle({ title: "托运人仪表板" });
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [openAccordionIndex, setOpenAccordionIndex] = useState<any>();
@@ -60,7 +60,7 @@ const Shipper = () => {
     if (url) {
       window.open(`${process.env.REACT_APP_API_URL}${url}`, "_blank");
     } else {
-      alert("No file uploaded");
+      alert("没有上传文件");
     }
   };
 
@@ -71,19 +71,19 @@ const Shipper = () => {
 
   const orderColumns: TableColumn<ShipperOrderData>[] = [
     {
-      name: "Product",
+      name: "产品",
       selector: (row) => row.products[0].name,
       sortable: true,
       // width: "15%",
     },
     {
-      name: "Used Quantity",
+      name: "使用数量",
       selector: (row) => row.usedQuantity,
       sortable: true,
       // width: "15%",
     },
     {
-      name: "Label",
+      name: "标签",
       selector: (row) => row.label,
       sortable: true,
       // width: "15%",
@@ -92,24 +92,25 @@ const Shipper = () => {
           className="p-2 px-4 rounded-full bg-blue-800 text-white"
           onClickCapture={() => handleView(row.label)}
         >
-          View
+          
+看法
         </button>
       ),
     },
     {
-      name: "Status",
+      name: "地位",
       selector: (row) => row.status,
       sortable: true,
       // width: "15%",
     },
     {
-      name: "Created At",
+      name: "创建于",
       selector: (row) => row.createdAt?.substring(0, 10),
       sortable: true,
       // width: "15%",
     },
     {
-      name: "Change status",
+      name: "更改状态",
       selector: (row) => row.orderId,
       sortable: true,
       // width: "15%",
@@ -118,7 +119,7 @@ const Shipper = () => {
           className="p-2 px-4 rounded-full bg-black text-white flex flex-row gap-2 items-center justify-center"
           onClickCapture={() => openStatusPopup(true, row.orderId)}
         >
-          Select status
+          选择状态
           <p className="text-xl">
             <CgArrowsExchange />
           </p>
@@ -139,27 +140,28 @@ const Shipper = () => {
       <div className="w-full max-w-[1200px] max-auto px-2">
         {loading ? (
           <div className="flex">
-          <MiniLoader />
+            <MiniLoader />
           </div>
         ) : (
           <div className="w-full p-5 flex flex-col gap-2 h-full">
             <div className="flex flex-row justify-start">
-              <h3>SELLERS</h3>
+              <h3>
+                卖家</h3>
             </div>
             {!shipperData || shipperData.length === 0 ? (
               <p className="text-center text-gray-500 mt-4">
-                No Seller associated with your account
+
+                没有卖家与您的帐户关联
               </p>
             ) : (
               shipperData?.map((item: any, itemIndex: any) => (
                 <div key={`${itemIndex}+${item}`}>
                   <div
                     key={itemIndex}
-                    className={`full ${
-                      itemIndex === openAccordionIndex
+                    className={`full ${itemIndex === openAccordionIndex
                         ? "accordionActive bg-gray-100"
                         : ""
-                    } border border-gray-200 hover:bg-gray-100 duration-300 rounded-lg overflow-hidden`}
+                      } border border-gray-200 hover:bg-gray-100 duration-300 rounded-lg overflow-hidden`}
                   >
                     <section
                       className="flex flex-row gap-0 justify-between p-5 cursor-pointer"
@@ -181,16 +183,15 @@ const Shipper = () => {
                       </div>
                     </section>
                     <section
-                      className={`flex flex-col gap-2 transition w-full ${
-                        itemIndex === openAccordionIndex
+                      className={`flex flex-col gap-2 transition w-full ${itemIndex === openAccordionIndex
                           ? "border-t p-4 h-auto"
                           : "max-h-0"
-                      } border-gray-300 overflow-hidden accordion duration-300`}
+                        } border-gray-300 overflow-hidden accordion duration-300`}
                     >
                       <div className="w-full">
                         {loading1 ? (
                           <div className="flex mt-4">
-                          <MiniLoader />
+                            <MiniLoader />
                           </div>
                         ) : (
                           <DataTable

@@ -69,7 +69,7 @@ const Seller = () => {
     if (url) {
       window.open(`${process.env.REACT_APP_API_URL}${url}`, "_blank");
     } else {
-      alert("No file uploaded");
+      alert("没有上传文件");
     }
   };
 
@@ -77,19 +77,19 @@ const Seller = () => {
     <div className="flex flex-col w-full">
       <div className="flex flex-col justify-center items-center py-5">
         <div className="mt-2 flex justify-between items-center w-full max-w-[1200px] mx-auto px-2">
-          <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">All Products</h1>
+          <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">所有产品</h1>
           <div className="flex gap-4">
             <button
               onClick={() => setShowAddProduct(true)}
               className="px-4 py-2 bg-blue-800 text-white rounded-full hover:bg-blue-600"
             >
-              Add Product
+             添加产品
             </button>
             <button
               onClick={() => setShowAddOrder(true)}
               className="px-4 py-2 bg-green-800 text-white rounded-full hover:bg-bgreen-600"
             >
-              Add Order
+           添加订单
             </button>
           </div>
         </div>
@@ -101,10 +101,10 @@ const Seller = () => {
           ) : (
             <div className="w-full p-5 flex flex-col gap-2 h-full">
               <div className="flex flex-row justify-around mx-14">
-                <h3>PRODUCT</h3>
-                <h3>TOTAL QUANTITY</h3>
-                <h3>AVAILABLE QUANTITY</h3>
-                <h3>DATE OF CREATION</h3>
+                <h3>产品</h3>
+                <h3>总数量</h3>
+                <h3>可用数量</h3>
+                <h3>创建日期</h3>
               </div>
               {apiProductData && apiProductData.length > 0 ?
               apiProductData?.map((item, itemIndex) => (
@@ -158,34 +158,34 @@ const Seller = () => {
                             data={ordersOfSingleProduct}
                             columns={[
                               {
-                                name: "Product",
+                                name: "产品",
                                 selector: (row: any) => row?.products[0]?.name,
                                 sortable: true,
                               },
                               {
-                                name: "Used Quantity",
+                                name: "使用数量",
                                 selector: (row: any) => row.usedQuantity,
                                 sortable: true,
                               },
                               {
-                                name: "Label",
+                                name: "标签",
                                 selector: (row: any) => row.label,
                                 cell: (row: any) => (
                                   <button
                                     className="p-2 px-4 rounded-full bg-blue-800 text-white"
                                     onClick={() => handleView(row.label)}
                                   >
-                                    View
+                                    看法
                                   </button>
                                 ),
                               },
                               {
-                                name: "Status",
+                                name: "地位",
                                 selector: (row: any) => row.status,
                                 sortable: true,
                               },
                               {
-                                name: "Date",
+                                name: "日期",
                                 selector: (row: any) =>
                                   row.createdAt?.substring(0, 10),
                                 sortable: true,
@@ -199,7 +199,7 @@ const Seller = () => {
                 </div>
               ))
             :
-            <p className="text-gray-500 text-center mt-1">No products found </p>
+            <p className="text-gray-500 text-center mt-1">没有找到产品 </p>
             }
             </div>
           )}
