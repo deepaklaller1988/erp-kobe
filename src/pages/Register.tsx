@@ -180,9 +180,7 @@ const Register: React.FC = () => {
               {loading ? <MiniLoader /> : "报名"}
             </button>
             {errors.general && <p className="text-red-500 text-center">{errors.general}</p>}
-          </form>
-        )}
-        <div className="mt-5 flex gap-2 text-black">
+            <div className="mt-5 flex gap-2 text-black">
           <span>已有账户?</span>
           <Link
             to="/auth/login"
@@ -191,6 +189,10 @@ const Register: React.FC = () => {
             登入
           </Link>
         </div>
+          </form>
+
+        )}
+      
       </div>
     </div>
   );

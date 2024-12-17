@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import API from "../utils/API";
 import { useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -32,7 +32,7 @@ const Password = () => {
     return urlParams.get(name);
   };
   const token = getQueryParam("token");
-  
+
 
   const handleSubmitNewPassword = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -97,7 +97,7 @@ const Password = () => {
           <input
             className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
             type={passwordVisible ? "text" : "password"}
-            placeholder="输入新密码"
+            // placeholder="输入新密码"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -116,7 +116,7 @@ const Password = () => {
           <input
             className="w-full rounded-md p-3 outline-none border border-[#D1D5DB] bg-gray-100 text-black"
             type={passwordVisible ? "text" : "password"}
-            placeholder="Enter Confirm Password"
+            // placeholder="Enter Confirm Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
@@ -132,7 +132,7 @@ const Password = () => {
         )}
 
         <button
-          onClick={handleSubmitNewPassword}
+          onClick={(e)=>handleSubmitNewPassword(e)}
           className="rounded-md p-3 px-5 transition text-white bg-black hover:bg-black/80 min-w-[92px] mt-8"
         >
           重置密码

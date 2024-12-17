@@ -36,9 +36,13 @@ const ForgotPassword: React.FC = () => {
       setIsLoading(false)
       if (!response.success) {
         if (response.error?.code === "ERR_SHIPPER_NOT_FOUND") {    
-          showToast("error", "未找到发货人");
+          showToast("error", "未找到帐号，请注册");
         }else if(response.error?.code === "ERR_USER_NOT_FOUND"){
           showToast("error", "该邮箱尚未注册");
+        }else if(response.error.code === "ERR_ACCOUNT_NOT_VERIFIED"){
+          showToast("error", "帐户未验证");
+        }else{
+          showToast("error",response.error.code);
         }
       }else{
         showToast("success","密码链接发送成功")
