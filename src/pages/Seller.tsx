@@ -11,6 +11,7 @@ import {
   SellerProductData,
   ShipperOrderData,
 } from "../types/DataTableAttributes";
+import ErrorPopup from "../components/ErrorPopup";
 
 const Seller = () => {
   const [ordersOfSingleProduct, setOrdersOfSingleProduct] = useState<any[]>([]);
@@ -22,6 +23,7 @@ const Seller = () => {
   const [showAddOrder, setShowAddOrder] = useState(false);
   const [apiProductData, setApiProductData] = useState<SellerProductData[]>([]);
   const [apiOrderSeller, setApiOrderSeller] = useState<ShipperOrderData[]>([]);
+  const [error,setError]=useState<string|null>(null);
 
   // useEffect(() => {
   //   apiOrderSellerData();
@@ -33,7 +35,12 @@ const Seller = () => {
   const apiProduct = async () => {
     const response = await API.get("product/");
     setLoading(true);
-    setApiProductData(response.data.rows);
+    if(response.error){
+      setError(response.error.code)
+    }else{
+      setApiProductData(response.data.rows);
+    }
+    
     setLoading(false);
   };
 
@@ -75,6 +82,7 @@ const Seller = () => {
 
   return (
     <div className="flex flex-col w-full">
+      {error && <ErrorPopup error={error} setError={setError}/>}
       <div className="flex flex-col justify-center items-center py-5">
         <div className="mt-2 flex justify-between items-center w-full max-w-[1200px] mx-auto px-2">
           <h1 className="text-xl mb-4 text-blue-800 font-semibold text-center">所有产品</h1>

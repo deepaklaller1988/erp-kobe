@@ -2,10 +2,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import API from "../utils/API";
 import { useEffect, useState } from "react";
 import { userDetailsAttributes } from "../types/UserTypes";
+import ErrorPopup from "./ErrorPopup";
 
 export const Header = () => {
   const router = useNavigate();
   const [userDetails, setUserDetails] = useState<userDetailsAttributes>();
+  const [error,setError]=useState<string|null>(null);
 
   useEffect(() => {
     let checkUserDetails: any = localStorage.getItem("userDetails");
@@ -26,7 +28,9 @@ export const Header = () => {
     } else if (userDetails?.type === "shipper") {
       router("/shipper");
     } else {
-      window.alert("Not logged in");
+      // window.alert("未登录");
+      setError("未登录")
+      
     }
   };
 
@@ -38,6 +42,7 @@ export const Header = () => {
   // console.log("user type : " , typeOfUser)
   return (
     <header className="p-8 lg:px-8 px-5 w-full bg-black">
+      {/* {error && <ErrorPopup error={error} setError={setError}/>} */}
       <div className="flex flex-col h-full justify-between">
         <div className="header-inner flex justify-between items-center">
           <div className="header-icon">

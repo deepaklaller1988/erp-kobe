@@ -25,9 +25,20 @@ const Layout = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
+    const user:any = localStorage.getItem("userDetails");
+    const userDetails = JSON.parse(user);
+    console.log("userDetails",userDetails)
 
     const authRoutes = [ "/auth/register", "/auth/forgot-password", "/auth/verification"];
     const isAuthRoute = authRoutes.includes(location.pathname);
+    console.log("isAuthRoute",location.pathname)
+
+    if(location.pathname ==="/auth/login"){
+
+      if(storedToken){
+        navigate(`/${userDetails.type}`);
+      }
+    }
 
     if (!storedToken && !isAuthRoute) {
       navigate("/auth/login");
