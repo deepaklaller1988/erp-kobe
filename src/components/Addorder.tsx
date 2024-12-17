@@ -56,11 +56,11 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
     label: string;
   }) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await API.post("order", data);
-      showToast("success","订单添加成功")
+      showToast("success", "订单添加成功");
       onSuccess();
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error("Error during product submission:", error);
       setLoading(false)
@@ -111,7 +111,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
 
       try {
         let response = await fetch(
-          "http://localhost:5000/api/v1/order/upload-label",
+          `${process.env.REACT_APP_API_URL}order/upload-label`,
           {
             method: "POST",
             body: formData,
@@ -282,7 +282,7 @@ const AddorderData = ({ onClose, onSuccess }: PollModalProps) => {
         <div className="text-center">
           {loading ? (
             <div className="mt-4">
-            <MiniLoader />
+              <MiniLoader />
             </div>
           ) : (
             <button
