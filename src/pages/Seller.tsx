@@ -12,8 +12,11 @@ import {
   ShipperOrderData,
 } from "../types/DataTableAttributes";
 import ErrorPopup from "../components/ErrorPopup";
+import useTitle from "../hooks/useTitle";
 
 const Seller = () => {
+  useTitle({ title: "卖方" });
+
   const [ordersOfSingleProduct, setOrdersOfSingleProduct] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(

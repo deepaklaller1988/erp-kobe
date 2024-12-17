@@ -3,8 +3,10 @@ import Password from "../components/Password";
 import Successmessage from "../components/Successmessage";
 import { useLocation } from "react-router-dom";
 import API from "../utils/API";
+import useTitle from "../hooks/useTitle";
 
 const Verification = () => {
+  useTitle({ title: "确认" });
   const [type, setType] = useState<string | null>(null);
   const location = useLocation();
   const [error,setError]=useState<string | null>(null);

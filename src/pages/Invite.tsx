@@ -3,8 +3,10 @@ import API from "../utils/API";
 import { useLocation, useNavigate } from "react-router-dom";
 import MiniLoader from "../components/MiniLoader";
 import { toast } from "react-toastify";
+import useTitle from "../hooks/useTitle";
 
 const Invite = () => {
+  useTitle({ title: "邀请" });
   const router = useNavigate();
   const location = useLocation();
   const [shipperEmail, setUserData] = useState<string>("");
